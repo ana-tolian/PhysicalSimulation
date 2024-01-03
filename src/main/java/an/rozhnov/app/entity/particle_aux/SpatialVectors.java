@@ -1,7 +1,7 @@
 package an.rozhnov.app.entity.particle_aux;
 
 import an.rozhnov.app.entity.Vector;
-import an.rozhnov.appState.PreInitialisedParameters;
+import an.rozhnov.appState.PredefinedParameters;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class SpatialVectors {
         limit(f, 10.0);
         v.x += f.x / mass * simSpeed.dt();
         v.y += f.y / mass * simSpeed.dt();
-        if (AppGlobalState.gravityEnabled) v.y += PreInitialisedParameters.GRAVITY;
+        if (AppGlobalState.gravityEnabled) v.y += PredefinedParameters.GRAVITY;
 
         f.x = 0;
         f.y = 0;

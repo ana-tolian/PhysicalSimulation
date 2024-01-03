@@ -2,7 +2,7 @@ package an.rozhnov.app.io;
 
 import an.rozhnov.app.entity.Particle;
 import an.rozhnov.app.entity.builders.ParticleBuilder;
-import an.rozhnov.appState.PreInitialisedParameters;
+import an.rozhnov.appState.PredefinedParameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -12,9 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ParticlePropertyLoader {
 
@@ -30,7 +28,7 @@ public class ParticlePropertyLoader {
         try {
             DocumentBuilder documentBuilder;
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse(PreInitialisedParameters.PARTICLES_PATH);
+            Document document = documentBuilder.parse(PredefinedParameters.PARTICLES_PATH);
 
             Node root = document.getDocumentElement();
             NodeList particles = root.getChildNodes();

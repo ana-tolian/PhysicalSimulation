@@ -4,10 +4,9 @@ package an.rozhnov.app.gui.panels.rightPanel;
 import an.rozhnov.app.gui.custom.NButton;
 import an.rozhnov.app.gui.custom.NPanel;
 import an.rozhnov.app.io.ParticlePropertyLoader;
-import an.rozhnov.appState.PreInitialisedParameters;
+import an.rozhnov.appState.PredefinedParameters;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +18,8 @@ public class RightPanel extends NPanel implements ActionListener {
 
     public RightPanel () {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        this.setPreferredSize(new Dimension(25, PreInitialisedParameters.SIM_HEIGHT));
-        this.setBackground(PreInitialisedParameters.RIGHT_PANEL_BACKGROUND);
+        this.setPreferredSize(new Dimension(25, PredefinedParameters.SIM_HEIGHT));
+        this.setBackground(PredefinedParameters.RIGHT_PANEL_BACKGROUND);
 
         int i = 0;
         Set<String> keySet = ParticlePropertyLoader.PALETTE.keySet();

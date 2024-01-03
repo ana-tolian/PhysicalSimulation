@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static an.rozhnov.appState.PreInitialisedParameters.SIM_HEIGHT;
-import static an.rozhnov.appState.PreInitialisedParameters.SIM_WIDTH;
+import static an.rozhnov.appState.PredefinedParameters.SIM_HEIGHT;
+import static an.rozhnov.appState.PredefinedParameters.SIM_WIDTH;
 import static an.rozhnov.appState.currentState.AppGlobalState.mousePointer;
 
 

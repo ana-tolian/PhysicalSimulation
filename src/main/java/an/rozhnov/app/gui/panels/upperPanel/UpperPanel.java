@@ -1,7 +1,7 @@
 package an.rozhnov.app.gui.panels.upperPanel;
 
 import an.rozhnov.app.gui.custom.NPanel;
-import an.rozhnov.appState.PreInitialisedParameters;
+import an.rozhnov.appState.PredefinedParameters;
 
 import java.awt.*;
 
@@ -13,7 +13,7 @@ public class UpperPanel extends NPanel {
 
     public UpperPanel () {
         this.setLayout(new FlowLayout());
-        this.setBackground(PreInitialisedParameters.UPPER_PANEL_BACKGROUND);
+        this.setBackground(PredefinedParameters.UPPER_PANEL_BACKGROUND);
 
         speedPanel = new SpeedPanel();
         toolsPanel = new ToolsPanel();

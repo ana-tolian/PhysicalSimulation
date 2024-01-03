@@ -3,7 +3,7 @@ package an.rozhnov.appState;
 
 import java.awt.*;
 
-public class PreInitialisedParameters {
+public class PredefinedParameters {
 
     public final static String PARTICLES_PATH = "src//main//resources//particles.xml";
 

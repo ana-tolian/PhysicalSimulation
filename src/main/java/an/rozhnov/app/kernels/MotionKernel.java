@@ -3,10 +3,6 @@ package an.rozhnov.app.kernels;
 import an.rozhnov.app.entity.Particle;
 import an.rozhnov.app.kernels.devControl.LoadMeasurer;
 import an.rozhnov.app.kernels.etc.RegionMap;
-import an.rozhnov.appState.currentState.AppGlobalState;
-
-import static an.rozhnov.appState.PreInitialisedParameters.SIM_HEIGHT;
-import static an.rozhnov.appState.PreInitialisedParameters.SIM_WIDTH;
 
 
 public class MotionKernel {

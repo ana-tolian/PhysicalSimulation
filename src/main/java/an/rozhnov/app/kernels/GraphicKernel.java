@@ -1,7 +1,7 @@
 package an.rozhnov.app.kernels;
 
 import an.rozhnov.app.entity.Particle;
-import an.rozhnov.app.entity.builders.ParticleDirector;
+import an.rozhnov.app.kernels.drivers.DrawingDriver;
 import an.rozhnov.app.kernels.etc.Camera;
 import an.rozhnov.app.kernels.etc.PredefinedColors;
 import an.rozhnov.app.kernels.etc.RegionMap;
@@ -13,33 +13,32 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
 
-import static an.rozhnov.appState.PreInitialisedParameters.*;
-import static an.rozhnov.appState.currentState.AppGlobalState.drawField;
+import static an.rozhnov.appState.PredefinedParameters.*;
 import static an.rozhnov.appState.currentState.AppGlobalState.particleBrush;
 
 
 public class GraphicKernel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private final Camera camera;
-    private final MainKernel mainKernel;
     private final RegionMap regionMap;
+    private final DrawingDriver drawingDriver;
     private final HashSet<Particle> particles;
 
     private boolean drag = false;
-    private double mx1;
-    private double mx2;
-    private double my1;
-    private double my2;
+    private int mx1;
+    private int mx2;
+    private int my1;
+    private int my2;
 
 
-    public GraphicKernel (MainKernel mainKernel, RegionMap regionMap) {
+    public GraphicKernel (DrawingDriver drawingDriver, RegionMap regionMap) {
         setPreferredSize(new Dimension(SIM_WIDTH, SIM_HEIGHT));
         setMaximumSize(new Dimension(SIM_WIDTH, SIM_HEIGHT));
 
-        this.camera = new Camera();
-        this.mainKernel = mainKernel;
         this.regionMap = regionMap;
-        this.particles = mainKernel.regionMap.getParticles();
+        this.particles = regionMap.getParticles();
+        this.camera = new Camera();
+        this.drawingDriver = drawingDriver;
 
         setFocusable(true);
         requestFocus();
@@ -70,7 +69,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
             camera.draw(g2, p);
         }
         if (AppGlobalState.drawingMode != DrawingMode.BRUSH && drag) {
-            predrawShape(g2);
+            pre_drawShape(g2);
         }
     }
 
@@ -131,17 +130,17 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
-    private void predrawShape (Graphics2D g) {
+    private void pre_drawShape(Graphics2D g) {
         g.setColor(particleBrush.getPhyParams().getColor());
 
         if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE) {
-            g.fillRect((int) mx1, (int) my1, (int) (mx2 - mx1), (int) (my2 - my1));
+            g.fillRect(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.RECTANGLE) {
-            g.drawRect((int) mx1, (int) my1, (int) (mx2 - mx1), (int) (my2 - my1));
+            g.drawRect(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.FILLED_CIRCLE) {
-            g.fillOval((int) mx1, (int) my1, (int) (mx2 - mx1), (int) (my2 - my1));
+            g.fillOval(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.CIRCLE) {
-            g.drawOval((int) mx1, (int) my1, (int) (mx2 - mx1), (int) (my2 - my1));
+            g.drawOval(mx1, my1, (mx2 - mx1), (mx2 - mx1));
         }
     }
 
@@ -152,8 +151,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         my1 = e.getY();
 
         if (AppGlobalState.drawingMode == DrawingMode.BRUSH) {
-            Particle p = new ParticleDirector().createParticleFromBrush(AppGlobalState.particleBrush, mx1, my1);
-            mainKernel.addNewParticle(p);
+            drawingDriver.draw(mx1, my1);
         }
     }
 
@@ -164,9 +162,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         my2 = e.getY();
 
         if (AppGlobalState.drawingMode == DrawingMode.BRUSH) {
-            Particle p = new ParticleDirector().createParticleFromBrush(AppGlobalState.particleBrush, mx2, my2);
-            mainKernel.addNewParticle(p);
-
+            drawingDriver.draw(mx2, my2);
         } else if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE) {
         }
     }
@@ -177,23 +173,21 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         AppGlobalState.mousePointer.y = e.getY() + 1;
     }
     @Override
-    public void mouseClicked(MouseEvent e) {
-    }
+    public void mouseClicked(MouseEvent e) {}
     @Override
     public void mouseReleased(MouseEvent e) {
         drag = false;
+        mx2 = e.getX();
+        my2 = e.getY();
 
-        if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE) {
-            mx2 = e.getX();
-            my2 = e.getY();
-
-            for (int x = (int) mx1; x <= mx2; x++)
-                for (int y = (int) my1; y <= my2; y++) {
-                    Particle p = new ParticleDirector().createParticleFromBrush(AppGlobalState.particleBrush, x, y);
-                    mainKernel.addNewParticle(p);
-                }
-
-        }
+        if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE)
+            drawingDriver.fillRectangle(mx1, my1, mx2, my2);
+        else if (AppGlobalState.drawingMode == DrawingMode.FILLED_CIRCLE)
+            drawingDriver.fillCircle(mx1, my1, mx2, my2);
+        else if (AppGlobalState.drawingMode == DrawingMode.RECTANGLE)
+            drawingDriver.rectangle(mx1, my1, mx2, my2);
+        else if (AppGlobalState.drawingMode == DrawingMode.CIRCLE)
+            drawingDriver.circle(mx1, my1, mx2 - mx1);
     }
 
     @Override
