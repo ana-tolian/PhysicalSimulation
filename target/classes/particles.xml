@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<particles>
+    <particle>
+        <name> Oxygen </name>
+        <type> Oxy </type>
+        <radius> 1  </radius>
+        <mass>  16   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 1.5 </rmin>
+        <eps> 3 </eps>
+        <color> (255,0,0)</color>
+    </particle>
+    <particle>
+        <name> Hydrogen </name>
+        <type> Hyd </type>
+        <radius> 1  </radius>
+        <mass>  1   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 0.5 </rmin>
+        <eps> 1 </eps>
+        <color>(0,0,230)</color>
+    </particle>
+    <particle>
+        <name> Silicium </name>
+        <type> Sil </type>
+        <radius> 1  </radius>
+        <mass>  1   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 2 </rmin>
+        <eps> 10 </eps>
+        <color> (255,200,0)</color>
+    </particle>
+    <particle>
+        <name> Uranium </name>
+        <type> U </type>
+        <radius> 1  </radius>
+        <mass>  4   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 4 </rmin>
+        <eps> 10 </eps>
+        <color> (0,200,0)</color>
+    </particle>
+<!-- etc -->
+</particles>

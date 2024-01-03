@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<particles>
+    <image>"link-to-image" </image>
+    <particle>
+        <name> Oxygen </name>
+        <type> Oxy </type>
+        <x> 0</x>
+        <y> 0</y>
+        <vx> 0</vx>
+        <vy> 0</vy>
+        <radius> 1  </radius>
+        <mass>  16   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 2 </rmin>
+        <eps> 3 </eps>
+        <color> (255,0,0)</color>
+    </particle>
+    <particle>
+        <name> Hydrogen </name>
+        <type> Hyd </type>
+        <x> 100</x>
+        <y> 100</y>
+        <vx> 0</vx>
+        <vy> 0</vy>
+        <radius> 1  </radius>
+        <mass>  1   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 0.5 </rmin>
+        <eps> 1 </eps>
+        <color>(0,0,230)</color>
+    </particle>
+<!-- etc -->
+</particles>
