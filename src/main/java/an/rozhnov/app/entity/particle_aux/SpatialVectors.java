@@ -29,7 +29,7 @@ public class SpatialVectors {
 
         f.x = 0;
         f.y = 0;
-        limit(v, 8.0);
+        limit(v, 5.0);
     }
 
     public void move (double mass) {
