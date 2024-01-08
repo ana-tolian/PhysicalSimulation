@@ -1,9 +1,10 @@
 package an.rozhnov.app.kernels;
 
 import an.rozhnov.app.gui.panels.MainPanel;
-import an.rozhnov.app.kernels.drivers.DrawingDriver;
-import an.rozhnov.app.kernels.etc.QueueControl;
-import an.rozhnov.app.kernels.etc.RegionMap;
+import an.rozhnov.app.kernels.drivers.FPSController;
+import an.rozhnov.app.kernels.drivers.drawing.DrawingDriver;
+import an.rozhnov.app.kernels.drivers.particle.QueueControl;
+import an.rozhnov.app.kernels.drivers.particle.RegionMap;
 import an.rozhnov.appState.PredefinedParameters;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
@@ -36,8 +37,8 @@ public class MainKernel implements Runnable {
 
     public void run () {
         while (true) {
-            long a = System.currentTimeMillis();
-            sleep(1);
+            FPSController.startMeasuring();
+            sleep(FPSController.getSleepingTime());
             queue.addNewParticles();
             mainPanel.setBottomPanelInfoLabel((onPanel() ? regionMap.getObservedParticle() : null));
             graphicKernel.repaint();
@@ -50,7 +51,7 @@ public class MainKernel implements Runnable {
 
             motionKernel.performImpact();
             motionKernel.moveAll();
-            System.out.println(1000/(System.currentTimeMillis() - a));
+            FPSController.stopMeasuring();
         }
     }
 
@@ -63,8 +64,8 @@ public class MainKernel implements Runnable {
     }
 
     private boolean onPanel () {
-        return AppGlobalState.mousePointer.x >= 0 && AppGlobalState.mousePointer.x < PredefinedParameters.SIM_WIDTH
-                && AppGlobalState.mousePointer.y >= 0 && AppGlobalState.mousePointer.y < PredefinedParameters.SIM_HEIGHT;
+        return AppGlobalState.mousePointer.x >= 0 && AppGlobalState.mousePointer.x < PredefinedParameters.REAL_SIM_WIDTH
+                && AppGlobalState.mousePointer.y >= 0 && AppGlobalState.mousePointer.y < PredefinedParameters.REAL_SIM_HEIGHT;
     }
 
     public GraphicKernel getVisualization() {

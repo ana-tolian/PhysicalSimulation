@@ -1,10 +1,11 @@
 package an.rozhnov.app.kernels;
 
 import an.rozhnov.app.entity.Particle;
-import an.rozhnov.app.kernels.drivers.DrawingDriver;
-import an.rozhnov.app.kernels.etc.Camera;
-import an.rozhnov.app.kernels.etc.PredefinedColors;
-import an.rozhnov.app.kernels.etc.RegionMap;
+import an.rozhnov.app.kernels.drivers.FPSController;
+import an.rozhnov.app.kernels.drivers.drawing.DrawingDriver;
+import an.rozhnov.app.kernels.drivers.drawing.PredefinedColors;
+import an.rozhnov.app.kernels.drivers.particle.RegionMap;
+import an.rozhnov.app.kernels.drivers.drawing.ScalableGraphics;
 import an.rozhnov.appState.currentState.AppGlobalState;
 import an.rozhnov.appState.currentState.DrawingMode;
 
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import static an.rozhnov.appState.PredefinedParameters.*;
 import static an.rozhnov.appState.currentState.AppGlobalState.particleBrush;
@@ -19,9 +21,9 @@ import static an.rozhnov.appState.currentState.AppGlobalState.particleBrush;
 
 public class GraphicKernel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private final Camera camera;
     private final RegionMap regionMap;
     private final DrawingDriver drawingDriver;
+    private final ScalableGraphics scalableGraphics;
     private final HashSet<Particle> particles;
 
     private boolean drag = false;
@@ -32,13 +34,13 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
 
 
     public GraphicKernel (DrawingDriver drawingDriver, RegionMap regionMap) {
-        setPreferredSize(new Dimension(SIM_WIDTH, SIM_HEIGHT));
-        setMaximumSize(new Dimension(SIM_WIDTH, SIM_HEIGHT));
+        setPreferredSize(new Dimension(REAL_SIM_WIDTH, REAL_SIM_HEIGHT));
+        setMaximumSize(new Dimension(REAL_SIM_WIDTH, REAL_SIM_HEIGHT));
 
         this.regionMap = regionMap;
         this.particles = regionMap.getParticles();
-        this.camera = new Camera();
         this.drawingDriver = drawingDriver;
+        this.scalableGraphics = new ScalableGraphics();
 
         setFocusable(true);
         requestFocus();
@@ -52,103 +54,102 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D) g;
+        scalableGraphics.setGraphics((Graphics2D) g);
 
-        setupGraphics(g2);
-        drawPanel(g2);
-        drawGrid(g2);
-        drawInfo(g2);
+        drawPanel();
+        drawGrid();
+        drawInfo();
 
-        for (Particle p : particles) {
-            drawVector(g2, p);
-            drawField(g2, p);
+        Iterator<Particle> iterator = particles.iterator();
+        Particle p;
+
+        while (iterator.hasNext()) {
+            p = iterator.next();
+            drawVector(p);
+            drawField(p);
 
 //            g2.drawLine((int)p.getX(), (int)p.getY(), (int) (p.rx + p.getX()), (int) (p.ry + p.getY()));
 //            g2.setColor(Color.CYAN);
 //            g2.drawString("" + mainKernel.regionMap.toRegionIndex((int) p.getX(), (int) p.getY()), (int) p.getX(), (int) p.getY() - 10);
-            camera.draw(g2, p);
+            p.draw(scalableGraphics);
         }
         if (AppGlobalState.drawingMode != DrawingMode.BRUSH && drag) {
-            pre_drawShape(g2);
+            pre_drawShape();
         }
     }
 
-    private void setupGraphics (Graphics2D g2) {
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    private void drawPanel () {
+        scalableGraphics.setColor(PredefinedColors.SIM_PANEL_BACKGROUND);
+        scalableGraphics.fillRect(0, 0, scalableGraphics.LOGICAL_WIDTH, scalableGraphics.LOGICAL_HEIGHT);
     }
 
-    private void drawPanel (Graphics2D g2) {
-        g2.setColor(PredefinedColors.SIM_PANEL_BACKGROUND);
-        g2.fillRect(0, 0, SIM_WIDTH, SIM_HEIGHT);
+    private void drawInfo () {
+        scalableGraphics.setColor(PredefinedColors.TEXT_INFO_COLOR);
+        scalableGraphics.setFont(new Font("Courier New", Font.PLAIN, 15));
+        scalableGraphics.drawString("Current sim speed: " + ((AppGlobalState.paused) ?  "PAUSED" : AppGlobalState.simSpeed), 10, 25);
+        scalableGraphics.drawString("Particles: " + particles.size(), 10, 40);
+        scalableGraphics.drawString("FPS: " + FPSController.fps, 10, 55);
     }
 
-    private void drawInfo (Graphics2D g2) {
-        g2.setColor(PredefinedColors.TEXT_INFO_COLOR);
-        g2.setFont(new Font("Courier New", Font.PLAIN, 15));
-        g2.drawString("Current sim speed: " + ((AppGlobalState.paused) ?  "PAUSED" : AppGlobalState.simSpeed), 10, 20);
-        g2.drawString("Particles: " + particles.size(), 10, 35);
-    }
-
-    private void drawVector (Graphics2D g2, Particle p) {
+    private void drawVector (Particle p) {
         if (!AppGlobalState.drawVectors)
             return;
-        g2.setColor(PredefinedColors.VECTOR_COLOR);
-        g2.drawLine((int) p.getX(), (int) p.getY(), (int) (2*p.getVectors().v.x + p.getX()), (int) (2*p.getVectors().v.y + p.getY()));
+        scalableGraphics.setColor(PredefinedColors.VECTOR_COLOR);
+        scalableGraphics.drawLine((int) p.getX() - 1, (int) p.getY() - 1, (int) (2*p.getVectors().v.x + p.getX()), (int) (2*p.getVectors().v.y + p.getY()));
     }
 
-    private void drawGrid (Graphics2D g2) {
+    private void drawGrid () {
         if (!AppGlobalState.drawGrid)
             return;
 
-        g2.setColor(PredefinedColors.GRID_COLOR);
+        scalableGraphics.setColor(PredefinedColors.GRID_COLOR);
+        int length = scalableGraphics.toRealCoord(regionMap.getSquareSideLength());
 
-        for (int i = regionMap.getSquareSideLength(); i < SIM_WIDTH; i += regionMap.getSquareSideLength())
-            g2.drawLine(i, 0, i, SIM_HEIGHT);
+        for (int i = length; i < ScalableGraphics.LOGICAL_WIDTH; i += length)
+            scalableGraphics.drawLine(i, 0, i, ScalableGraphics.LOGICAL_HEIGHT);
 
-        for (int i = regionMap.getSquareSideLength(); i < SIM_HEIGHT; i += regionMap.getSquareSideLength())
-            g2.drawLine(0, i, SIM_WIDTH, i);
+        for (int i = length; i < ScalableGraphics.LOGICAL_HEIGHT; i += length)
+            scalableGraphics.drawLine(0, i, ScalableGraphics.LOGICAL_WIDTH, i);
     }
 
-    private void drawField (Graphics2D g2, Particle p) {
+    private void drawField (Particle p) {
         if (!AppGlobalState.drawField)
             return;
 
         double f;
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 0; i <= 8; i++) {
             f = p.calculateLennardJones(i);
 
             if (f < 0)
-                g2.setColor(PredefinedColors.NEGATIVE_FIELD_COLOR);
+                scalableGraphics.setColor(PredefinedColors.NEGATIVE_FIELD_COLOR);
             else if (f == 0)
-                g2.setColor(PredefinedColors.NEUTRAL_FIELD_COLOR);
+                scalableGraphics.setColor(PredefinedColors.NEUTRAL_FIELD_COLOR);
             else
-                g2.setColor(PredefinedColors.POSITIVE_FIELD_COLOR);
-        g2.drawOval((int) (p.getX() - p.getRadius() - i / 2), (int) (p.getY() - p.getRadius() - i / 2), (int) (p.getRadius() + i), (int) (p.getRadius() + i));
+                scalableGraphics.setColor(PredefinedColors.POSITIVE_FIELD_COLOR);
+            scalableGraphics.drawOval((int) (p.getX() - p.getRadius() - i / 2), (int) (p.getY() - p.getRadius() - i / 2), (int) (p.getRadius() + i), (int) (p.getRadius() + i));
 
         }
     }
 
-    private void pre_drawShape(Graphics2D g) {
-        g.setColor(particleBrush.getPhyParams().getColor());
+    private void pre_drawShape() {
+        scalableGraphics.setColor(particleBrush.getPhyParams().getColor());
 
         if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE) {
-            g.fillRect(mx1, my1, (mx2 - mx1), (my2 - my1));
+            scalableGraphics.fillRect(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.RECTANGLE) {
-            g.drawRect(mx1, my1, (mx2 - mx1), (my2 - my1));
+            scalableGraphics.drawRect(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.FILLED_CIRCLE) {
-            g.fillOval(mx1, my1, (mx2 - mx1), (my2 - my1));
+            scalableGraphics.fillOval(mx1, my1, (mx2 - mx1), (my2 - my1));
         } else if (AppGlobalState.drawingMode == DrawingMode.CIRCLE) {
-            g.drawOval(mx1, my1, (mx2 - mx1), (mx2 - mx1));
+            scalableGraphics.drawOval(mx1, my1, (mx2 - mx1), (mx2 - mx1));
         }
     }
 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mx1 = e.getX();
-        my1 = e.getY();
+        mx1 = ScalableGraphics.toLogicalCoord(e.getX());
+        my1 = ScalableGraphics.toLogicalCoord(e.getY());
 
         if (AppGlobalState.drawingMode == DrawingMode.BRUSH) {
             drawingDriver.draw(mx1, my1);
@@ -158,8 +159,8 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
     @Override
     public void mouseDragged(MouseEvent e) {
         drag = true;
-        mx2 = e.getX();
-        my2 = e.getY();
+        mx2 = ScalableGraphics.toLogicalCoord(e.getX());
+        my2 = ScalableGraphics.toLogicalCoord(e.getY());
 
         if (AppGlobalState.drawingMode == DrawingMode.BRUSH) {
             drawingDriver.draw(mx2, my2);
@@ -169,16 +170,16 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        AppGlobalState.mousePointer.x = e.getX() + 1;
-        AppGlobalState.mousePointer.y = e.getY() + 1;
+        AppGlobalState.mousePointer.x = ScalableGraphics.toLogicalCoord(e.getX()) + 1;
+        AppGlobalState.mousePointer.y = ScalableGraphics.toLogicalCoord(e.getY()) + 1;
     }
     @Override
     public void mouseClicked(MouseEvent e) {}
     @Override
     public void mouseReleased(MouseEvent e) {
         drag = false;
-        mx2 = e.getX();
-        my2 = e.getY();
+        mx2 = ScalableGraphics.toLogicalCoord(e.getX());
+        my2 = ScalableGraphics.toLogicalCoord(e.getY());
 
         if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE)
             drawingDriver.fillRectangle(mx1, my1, mx2, my2);
@@ -196,11 +197,11 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
     public void mouseExited(MouseEvent e) {}
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (-e.getWheelRotation() > 0) {
-            camera.setScale(1.0);
-        } else if (-e.getWheelRotation() < 0) {
-            camera.setScale(-1.0);
-        }
+//        if (-e.getWheelRotation() > 0) {
+//            camera.setScale(1.0);
+//        } else if (-e.getWheelRotation() < 0) {
+//            camera.setScale(-1.0);
+//        }
     }
 }
 

@@ -2,17 +2,17 @@ package an.rozhnov.app.entity;
 
 import java.util.Objects;
 
-public class Vector {
+public class Vector2D {
 
     public double x;
     public double y;
 
-    public Vector(double x, double y) {
+    public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public void sum (Vector v) {
+    public void sum (Vector2D v) {
         this.x += v.x;
         this.y += v.y;
     }
@@ -37,8 +37,8 @@ public class Vector {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vector vector = (Vector) o;
-        return Double.compare(vector.x, x) == 0 && Double.compare(vector.y, y) == 0;
+        Vector2D vector2D = (Vector2D) o;
+        return Double.compare(vector2D.x, x) == 0 && Double.compare(vector2D.y, y) == 0;
     }
 
     @Override

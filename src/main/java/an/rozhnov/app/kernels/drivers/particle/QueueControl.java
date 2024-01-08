@@ -1,4 +1,4 @@
-package an.rozhnov.app.kernels.etc;
+package an.rozhnov.app.kernels.drivers.particle;
 
 import an.rozhnov.app.entity.Particle;
 

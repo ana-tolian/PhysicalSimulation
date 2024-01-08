@@ -1,6 +1,7 @@
-package an.rozhnov.app.kernels.etc;
+package an.rozhnov.app.kernels.drivers.particle;
 
 import an.rozhnov.app.entity.Particle;
+import an.rozhnov.app.kernels.drivers.drawing.ScalableGraphics;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.awt.*;
@@ -8,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static an.rozhnov.appState.PredefinedParameters.SIM_HEIGHT;
-import static an.rozhnov.appState.PredefinedParameters.SIM_WIDTH;
 import static an.rozhnov.appState.currentState.AppGlobalState.mousePointer;
 
 
@@ -17,8 +16,8 @@ public class RegionMap {
 
     private final int squareSideLength = 4;
     private final int squareDim = (int) (Math.log(squareSideLength) / Math.log(2));
-    private final int sqX = SIM_WIDTH >> squareDim;
-    private final int sqY = SIM_HEIGHT >> squareDim;
+    private final int sqX = ScalableGraphics.LOGICAL_WIDTH >> squareDim;
+    private final int sqY = ScalableGraphics.LOGICAL_HEIGHT >> squareDim;
 
     private final int size = sqX * sqY;
 
@@ -75,7 +74,9 @@ public class RegionMap {
     }
 
     public HashSet<Particle> getParticlesInRegion (int index) {
-        return regions.get(index);
+        if (inBorders(index))
+            return regions.get(index);
+        return new HashSet<>();
     }
 
     public Particle getObservedParticle () {
@@ -146,6 +147,10 @@ public class RegionMap {
             regions.get(i).clear();
         particles.clear();
         AppGlobalState.clearSheduled = false;
+    }
+
+    private boolean inBorders (int index) {
+        return index >= 0 && index < size;
     }
 
     public HashSet<Particle> getParticles() {

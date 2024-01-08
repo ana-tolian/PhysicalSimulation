@@ -18,7 +18,7 @@ public class RightPanel extends NPanel implements ActionListener {
 
     public RightPanel () {
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        this.setPreferredSize(new Dimension(25, PredefinedParameters.SIM_HEIGHT));
+        this.setPreferredSize(new Dimension(25, PredefinedParameters.REAL_SIM_HEIGHT));
         this.setBackground(PredefinedParameters.RIGHT_PANEL_BACKGROUND);
 
         int i = 0;

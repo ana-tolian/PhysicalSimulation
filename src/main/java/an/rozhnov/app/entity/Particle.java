@@ -4,8 +4,7 @@ import an.rozhnov.app.entity.particle_aux.Label;
 import an.rozhnov.app.entity.particle_aux.PhyParams;
 import an.rozhnov.app.entity.particle_aux.Potential;
 import an.rozhnov.app.entity.particle_aux.SpatialVectors;
-
-import java.awt.*;
+import an.rozhnov.app.kernels.drivers.drawing.ScalableGraphics;
 
 public class Particle {
 
@@ -13,9 +12,6 @@ public class Particle {
     private SpatialVectors vectors;
     private Potential potential;
     private PhyParams phyParams;
-
-    public double rx = 0;
-    public double ry = 0;
 
 
     public Particle(Label label, SpatialVectors vectors, Potential potential, PhyParams phyParams) {
@@ -25,13 +21,9 @@ public class Particle {
         this.phyParams = phyParams;
     }
 
-    public void draw (Graphics2D g2) {
-        draw(g2, 1.0);
-    }
-
-    public void draw (Graphics2D g2, double scale) {
-        g2.setColor(phyParams.getColor());
-        g2.fillOval((int) (vectors.r.x - getRadius()), (int) (vectors.r.y - getRadius()), (int) (getRadius() * scale), (int) (getRadius() * scale));
+    public void draw (ScalableGraphics scalableGraphics) {
+        scalableGraphics.setColor(phyParams.getColor());
+        scalableGraphics.fillOval((int) (vectors.r.x - getRadius()), (int) (vectors.r.y - getRadius()), (int) (getRadius()), (int) (getRadius()));
     }
 
     public double calculateLennardJones (double R) {
@@ -67,7 +59,6 @@ public class Particle {
     }
 
 
-
     public Label getLabel() {
         return label;
     }
@@ -83,6 +74,4 @@ public class Particle {
     public PhyParams getPhyParams() {
         return phyParams;
     }
-
-
 }

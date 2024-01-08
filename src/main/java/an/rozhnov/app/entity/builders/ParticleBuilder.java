@@ -1,7 +1,7 @@
 package an.rozhnov.app.entity.builders;
 
 import an.rozhnov.app.entity.Particle;
-import an.rozhnov.app.entity.Vector;
+import an.rozhnov.app.entity.Vector2D;
 import an.rozhnov.app.entity.particle_aux.Label;
 import an.rozhnov.app.entity.particle_aux.PhyParams;
 import an.rozhnov.app.entity.particle_aux.Potential;
@@ -12,17 +12,17 @@ import java.awt.*;
 public class ParticleBuilder {
 
     private Label label = new Label("Unknown", "Unk");
-    private SpatialVectors vectors = new SpatialVectors(new Vector(0,0), new Vector(0,0), new Vector(0,0));
+    private SpatialVectors vectors = new SpatialVectors(new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0));
     private Potential potential = new Potential(0,0);
     private PhyParams phyParams = new PhyParams(283, 1, 1, Color.WHITE);
 
 
     public void setVectors (double x, double y, double vx, double vy, double fx, double fy) {
-        this.vectors = new SpatialVectors(new Vector(x, y), new Vector(vx, vy), new Vector(fx, fy));
+        this.vectors = new SpatialVectors(new Vector2D(x, y), new Vector2D(vx, vy), new Vector2D(fx, fy));
     }
 
     public void applyForce (double fx, double fy) {
-        this.vectors.getF().sum(new Vector(fx, fy));
+        this.vectors.getF().sum(new Vector2D(fx, fy));
     }
 
     public void setLabel (String name, String type) {

@@ -1,7 +1,7 @@
-package an.rozhnov.app.kernels.drivers;
+package an.rozhnov.app.kernels.drivers.drawing;
 
 import an.rozhnov.app.entity.builders.ParticleDirector;
-import an.rozhnov.app.kernels.etc.QueueControl;
+import an.rozhnov.app.kernels.drivers.particle.QueueControl;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.awt.geom.Ellipse2D;

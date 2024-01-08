@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class BottomPanel extends NPanel {
 
-    private String info = "x: %4d y: %4d";
+    private String info = "x: %d y: %d";
     private JLabel infoLabel;
 
     public BottomPanel () {
@@ -26,4 +26,5 @@ public class BottomPanel extends NPanel {
     public void setInfo (String info) {
         infoLabel.setText(info);
     }
+
 }

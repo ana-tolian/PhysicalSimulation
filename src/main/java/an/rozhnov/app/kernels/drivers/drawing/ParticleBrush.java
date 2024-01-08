@@ -1,4 +1,4 @@
-package an.rozhnov.app.kernels.drivers;
+package an.rozhnov.app.kernels.drivers.drawing;
 
 import an.rozhnov.app.entity.Particle;
 import an.rozhnov.appState.currentState.DrawingMode;

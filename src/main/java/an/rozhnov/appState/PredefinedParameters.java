@@ -14,8 +14,8 @@ public class PredefinedParameters {
     public static final int FRAME_WIDTH = 1400;
     public static final int FRAME_HEIGHT = 900;
 
-    public static final int SIM_WIDTH = 1350;
-    public static final int SIM_HEIGHT = 780;
+    public static final int REAL_SIM_WIDTH = 1356;
+    public static final int REAL_SIM_HEIGHT = 780;
 
     public static final double GRAVITY = 9.81;
 }

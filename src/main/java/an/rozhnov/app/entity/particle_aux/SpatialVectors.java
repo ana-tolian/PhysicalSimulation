@@ -1,6 +1,6 @@
 package an.rozhnov.app.entity.particle_aux;
 
-import an.rozhnov.app.entity.Vector;
+import an.rozhnov.app.entity.Vector2D;
 import an.rozhnov.appState.PredefinedParameters;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
@@ -11,11 +11,11 @@ import static java.lang.Math.abs;
 
 public class SpatialVectors {
 
-    public Vector r;
-    public Vector v;
-    public Vector f;
+    public Vector2D r;
+    public Vector2D v;
+    public Vector2D f;
 
-    public SpatialVectors(Vector r, Vector v, Vector f) {
+    public SpatialVectors(Vector2D r, Vector2D v, Vector2D f) {
         this.r = r;
         this.v = v;
         this.f = f;
@@ -57,9 +57,9 @@ public class SpatialVectors {
         return LJ;
     }
 
-    private void limit (Vector vector, double limit) {
-        vector.x = limit(vector.x, limit);
-        vector.y = limit(vector.y, limit);
+    private void limit (Vector2D vector2D, double limit) {
+        vector2D.x = limit(vector2D.x, limit);
+        vector2D.y = limit(vector2D.y, limit);
     }
 
     private double limit (double c, double limit) {
@@ -73,27 +73,27 @@ public class SpatialVectors {
         return c;
     }
 
-    public Vector getR() {
+    public Vector2D getR() {
         return r;
     }
 
-    public void setR(Vector r) {
+    public void setR(Vector2D r) {
         this.r = r;
     }
 
-    public Vector getV() {
+    public Vector2D getV() {
         return v;
     }
 
-    public void setV(Vector v) {
+    public void setV(Vector2D v) {
         this.v = v;
     }
 
-    public Vector getF() {
+    public Vector2D getF() {
         return f;
     }
 
-    public void setF(Vector f) {
+    public void setF(Vector2D f) {
         this.f = f;
     }
 

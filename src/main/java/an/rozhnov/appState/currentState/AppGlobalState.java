@@ -11,10 +11,8 @@ public class AppGlobalState {
     public static boolean clearSheduled = false;
 
     public static DrawingMode drawingMode = DrawingMode.BRUSH;
-
     public static Point mousePointer = new Point(0,0);
     public static Particle particleBrush;
-    public static Particle observedParticle;
 
     public static boolean drawVectors = false;
     public static boolean drawGrid = false;
