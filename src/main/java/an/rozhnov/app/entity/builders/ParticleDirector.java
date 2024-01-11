@@ -33,7 +33,7 @@ public class ParticleDirector {
         return particleBuilder.createParticle();
     }
 
-    public Particle createParticleForPalette (double radius, double mass, double t, double eps, double rmin, Color color) {
+    public Particle createParticleForPalette (int radius, double mass, double t, double eps, double rmin, Color color) {
         particleBuilder.setLabel("Unknown", "unk");
         particleBuilder.setPhyParams(t, mass, radius, color);
         particleBuilder.setPotential(rmin, eps);

@@ -48,7 +48,7 @@ public class RegionMap {
 
     public void updateRegion (Particle p) {
         int index = toRegionIndex(p);
-        if (index < 0 || index >= size)
+        if (!inBorders(index))
             return;
 
         regions.get(index).remove(p);
@@ -79,6 +79,30 @@ public class RegionMap {
         return new HashSet<>();
     }
 
+    public HashSet<Particle> getParticlesInArea (Rectangle r) {
+        int x1 = r.x;
+        int y1 = r.y;
+        int x2 = r.width;
+        int y2 = r.height;
+
+        ArrayList<Integer> indexes = new ArrayList<>();
+        HashSet<Particle> area = new HashSet<>();
+
+        for (int x = x1; x < x2; x += squareSideLength)
+            for (int y = y1; y < y2; y += squareSideLength)
+                indexes.add(toRegionIndex(x, y));
+
+        for (int i = 0; i < indexes.size(); i++) {
+            HashSet<Particle> region = getParticlesInRegion(indexes.get(i));
+
+            for (Particle p : region)
+                if (r.contains(new Point((int) p.getX(), (int) p.getY())))
+                    area.add(p);
+        }
+
+        return area;
+    }
+
     public Particle getObservedParticle () {
         Particle particle = null;
         for (Particle p : getParticlesInRegion(toRegionIndex(mousePointer.x, mousePointer.y))) {
@@ -92,14 +116,14 @@ public class RegionMap {
     public HashSet<Particle> findAllNeighbours (Particle p) {
         int index = toRegionIndex(p);
 
-        boolean inBorders = (index >= 0) && (index < size - 1);
+        boolean inBorders = inBorders(index);
         if (!inBorders)
-            return new HashSet<Particle>();
+            return new HashSet<>();
 
-        boolean north = index - sqX >= 0 && inBorders;
-        boolean south = index + sqX < size - 1 && inBorders;
-        boolean west = index % sqX != 0 && inBorders;
-        boolean east = index - 1 % sqX != 0 && inBorders;
+        boolean north = index - sqX >= 0;
+        boolean south = index + sqX < size - 1;
+        boolean west = index % sqX != 0;
+        boolean east = index - 1 % sqX != 0;
 
         HashSet<Particle> neighbouringParticles = new HashSet<>(index);
 
@@ -150,7 +174,7 @@ public class RegionMap {
     }
 
     private boolean inBorders (int index) {
-        return index >= 0 && index < size;
+        return index >= 0 && index < size - 1;
     }
 
     public HashSet<Particle> getParticles() {

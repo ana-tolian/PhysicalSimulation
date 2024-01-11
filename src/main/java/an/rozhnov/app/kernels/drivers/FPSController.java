@@ -3,25 +3,21 @@ package an.rozhnov.app.kernels.drivers;
 public class FPSController {
 
     private static long firstMark;
-    public static long fps = 100;
+    public static int cycleTime = 20;
 
     public static void startMeasuring () {
         firstMark = System.currentTimeMillis();
     }
 
     public static void stopMeasuring () {
-        fps = (fps + 1000 / (System.currentTimeMillis() - firstMark)) >> 1;
+        cycleTime = (int) (System.currentTimeMillis() - firstMark);
     }
 
     public static int getSleepingTime () {
-        if (fps < 30)
-            return 1;
-        if (fps < 50)
-            return 10;
-        return 20;
+        return Math.max(20 - cycleTime, 0);
     }
 
     public static long getFPS () {
-        return fps;
+        return cycleTime;
     }
 }

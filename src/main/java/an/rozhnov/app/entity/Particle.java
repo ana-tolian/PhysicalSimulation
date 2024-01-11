@@ -54,7 +54,7 @@ public class Particle {
         return vectors.getR().y;
     }
 
-    public double getRadius () {
+    public int getRadius () {
         return phyParams.getRadius();
     }
 

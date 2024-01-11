@@ -6,37 +6,41 @@ import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.util.Objects;
 
-import static an.rozhnov.appState.currentState.AppGlobalState.simSpeed;
+import static an.rozhnov.appState.currentState.AppGlobalState.speedMode;
 import static java.lang.Math.abs;
 
 public class SpatialVectors {
 
     public Vector2D r;
     public Vector2D v;
+    public Vector2D a;
     public Vector2D f;
 
-    public SpatialVectors(Vector2D r, Vector2D v, Vector2D f) {
+    public SpatialVectors(Vector2D r, Vector2D v, Vector2D a, Vector2D f) {
         this.r = r;
         this.v = v;
+        this.a = a;
         this.f = f;
     }
 
-    public void accelerate (double mass) {
-        limit(f, 10.0);
-        v.x += f.x / mass * simSpeed.dt();
-        v.y += f.y / mass * simSpeed.dt();
-        if (AppGlobalState.gravityEnabled) v.y += PredefinedParameters.GRAVITY;
+    public void calculateAcceleration(double mass) {
+        if (mass != 0) {
+            if (AppGlobalState.gravityEnabled)
+                f.y += PredefinedParameters.GRAVITY * mass;
+
+            a.x = f.x / mass * speedMode.dt();
+            a.y = f.y / mass * speedMode.dt();
+        }
 
         f.x = 0;
         f.y = 0;
-        limit(v, 5.0);
     }
 
     public void move (double mass) {
-        accelerate(mass);
+        calculateAcceleration(mass);
 
-        r.x += v.x * simSpeed.dt();
-        r.y += v.y * simSpeed.dt();
+        r.x += v.x * speedMode.dt() * speedMode.dt();
+        r.y += v.y * speedMode.dt() * speedMode.dt();
     }
 
     public void applyForces (double fx, double fy) {
@@ -48,7 +52,7 @@ public class SpatialVectors {
         double sigma_r2 = potential.getRmin()*potential.getRmin() / R;
         double sigma_r6 = sigma_r2 * sigma_r2 * sigma_r2;
         double sigma_r12 = sigma_r6*sigma_r6;
-        double LJ = -4 * potential.getEps() * (sigma_r12 - 2*sigma_r6);
+        double LJ = 4 * potential.getEps() * (sigma_r12 - 2*sigma_r6);
 
         if (Double.isNaN(LJ))
             return -10.0;
@@ -64,6 +68,8 @@ public class SpatialVectors {
 
     private double limit (double c, double limit) {
         if (abs(c) > limit || Double.isNaN(c) || Double.isInfinite(c)) {
+            if (limit == 5.0)
+                System.out.println(c);
             double temp = c;
             c = limit;
 
@@ -99,7 +105,7 @@ public class SpatialVectors {
 
     @Override
     public String toString () {
-        return String.format("x: %4.3f y: %4.3f vx: %2.3f vy: %2.3f", r.x, r.y, v.x, v.y);
+        return String.format("x: %4.3f y: %4.3f vx: %2.3f vy: %2.3f fx: %2.3f fy: %2.3f", r.x, r.y, v.x, v.y, f.x, f.y);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package an.rozhnov.app.entity.particle_aux;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Potential {
@@ -7,9 +8,14 @@ public class Potential {
     private double rmin;
     private double eps;
 
+//    private HashMap<String, Double> rmin;
+//    private HashMap<String, Double> eps;
+
     public Potential(double rmin, double eps) {
-        this.rmin = rmin;
+        this.rmin = rmin / Math.pow(2, 1/6);
         this.eps = eps;
+//        this.rmin = new HashMap<>();
+//        this.eps = new HashMap<>();
     }
 
     public double calculateLennardJones (double R) {
@@ -25,7 +31,7 @@ public class Potential {
     }
 
     public void setRmin(double rmin) {
-        this.rmin = rmin;
+        this.rmin = rmin / Math.pow(2, 1/6);;
     }
 
     public double getEps() {

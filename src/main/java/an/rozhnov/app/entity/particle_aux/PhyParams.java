@@ -7,10 +7,10 @@ public class PhyParams {
 
     private double temperature;
     private double mass;
-    private double radius;
+    private int radius;
     private Color color;
 
-    public PhyParams(double temperature, double mass, double radius, Color color) {
+    public PhyParams(double temperature, double mass, int radius, Color color) {
         this.temperature = temperature;
         this.mass = mass;
         this.radius = radius;
@@ -33,11 +33,11 @@ public class PhyParams {
         this.mass = mass;
     }
 
-    public double getRadius() {
+    public int getRadius() {
         return radius;
     }
 
-    public void setRadius(double radius) {
+    public void setRadius(int radius) {
         this.radius = radius;
     }
 

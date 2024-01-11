@@ -6,7 +6,8 @@ public class PredefinedColors {
 
     public static final Color SIM_PANEL_BACKGROUND = new Color(0, 0, 0);
 
-    public static Color VECTOR_COLOR = new Color(0, 255, 0, 100);
+    public static Color SPEED_VECTOR_COLOR = new Color(0, 255, 0, 100);
+    public static Color FORCE_VECTOR_COLOR = new Color(255, 0, 134, 100);
     public static Color TEXT_INFO_COLOR = new Color(255, 255, 255, 195);
     public static Color GRID_COLOR = new Color(141, 141, 141, 126);
 

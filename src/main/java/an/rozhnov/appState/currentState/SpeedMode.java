@@ -1,14 +1,14 @@
 package an.rozhnov.appState.currentState;
 
-public enum SimSpeed {
-    SLOW(0.05),
-    MEDIUM(0.1),
-    FAST(0.2),
-    VERY_FAST(0.3);
+public enum SpeedMode {
+    SLOW(0.01),
+    MEDIUM(0.05),
+    FAST(0.1),
+    VERY_FAST(0.15);
 
     private double dt;
 
-    SimSpeed(double dt) {
+    SpeedMode(double dt) {
         this.dt = dt;
     }
 
@@ -16,7 +16,7 @@ public enum SimSpeed {
         return dt;
     }
 
-    public static SimSpeed dt (int i) {
+    public static SpeedMode dt (int i) {
         switch (i) {
             case 0:
                 return SLOW;

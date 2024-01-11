@@ -12,13 +12,13 @@ import java.awt.*;
 public class ParticleBuilder {
 
     private Label label = new Label("Unknown", "Unk");
-    private SpatialVectors vectors = new SpatialVectors(new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0));
+    private SpatialVectors vectors = new SpatialVectors(new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0));
     private Potential potential = new Potential(0,0);
     private PhyParams phyParams = new PhyParams(283, 1, 1, Color.WHITE);
 
 
-    public void setVectors (double x, double y, double vx, double vy, double fx, double fy) {
-        this.vectors = new SpatialVectors(new Vector2D(x, y), new Vector2D(vx, vy), new Vector2D(fx, fy));
+    public void setVectors (double x, double y, double vx, double vy, double ax, double ay, double fx, double fy) {
+        this.vectors = new SpatialVectors(new Vector2D(x, y), new Vector2D(vx, vy), new Vector2D(ax, ay), new Vector2D(fx, fy));
     }
 
     public void applyForce (double fx, double fy) {
@@ -41,7 +41,7 @@ public class ParticleBuilder {
         this.potential = potential;
     }
 
-    public void setPhyParams(double t, double mass, double radius, Color color) {
+    public void setPhyParams(double t, double mass, int radius, Color color) {
         this.phyParams = new PhyParams(t, mass, radius, color);
     }
 
@@ -76,7 +76,7 @@ public class ParticleBuilder {
         }
 
         if (param.equals("radius")) {
-            phyParams.setRadius(Double.parseDouble(value.trim()));
+            phyParams.setRadius(Integer.parseInt(value.trim()));
         }
 
         if (param.equals("mass")) {

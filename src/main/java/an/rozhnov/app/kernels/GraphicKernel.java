@@ -60,7 +60,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         drawGrid();
         drawInfo();
 
-        Iterator<Particle> iterator = particles.iterator();
+        Iterator<Particle> iterator = particles.stream().iterator();
         Particle p;
 
         while (iterator.hasNext()) {
@@ -86,16 +86,18 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
     private void drawInfo () {
         scalableGraphics.setColor(PredefinedColors.TEXT_INFO_COLOR);
         scalableGraphics.setFont(new Font("Courier New", Font.PLAIN, 15));
-        scalableGraphics.drawString("Current sim speed: " + ((AppGlobalState.paused) ?  "PAUSED" : AppGlobalState.simSpeed), 10, 25);
+        scalableGraphics.drawString("Current sim speed: " + ((AppGlobalState.paused) ?  "PAUSED" : AppGlobalState.speedMode), 10, 25);
         scalableGraphics.drawString("Particles: " + particles.size(), 10, 40);
-        scalableGraphics.drawString("FPS: " + FPSController.fps, 10, 55);
+        scalableGraphics.drawString("FPS: " + FPSController.cycleTime, 10, 55);
     }
 
     private void drawVector (Particle p) {
         if (!AppGlobalState.drawVectors)
             return;
-        scalableGraphics.setColor(PredefinedColors.VECTOR_COLOR);
+        scalableGraphics.setColor(PredefinedColors.SPEED_VECTOR_COLOR);
         scalableGraphics.drawLine((int) p.getX() - 1, (int) p.getY() - 1, (int) (2*p.getVectors().v.x + p.getX()), (int) (2*p.getVectors().v.y + p.getY()));
+        scalableGraphics.setColor(PredefinedColors.FORCE_VECTOR_COLOR);
+        scalableGraphics.drawLine((int) p.getX() - 1, (int) p.getY() - 1, (int) (2*p.getVectors().f.x + p.getX()), (int) (2*p.getVectors().f.y + p.getY()));
     }
 
     private void drawGrid () {
@@ -117,7 +119,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
             return;
 
         double f;
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 1; i < 32; i+=2) {
             f = p.calculateLennardJones(i);
 
             if (f < 0)
@@ -126,7 +128,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
                 scalableGraphics.setColor(PredefinedColors.NEUTRAL_FIELD_COLOR);
             else
                 scalableGraphics.setColor(PredefinedColors.POSITIVE_FIELD_COLOR);
-            scalableGraphics.drawOval((int) (p.getX() - p.getRadius() - i / 2), (int) (p.getY() - p.getRadius() - i / 2), (int) (p.getRadius() + i), (int) (p.getRadius() + i));
+            scalableGraphics.drawOval(((int) p.getX()) - p.getRadius() - (i >> 1), ((int) p.getY()) - p.getRadius() - (i >> 1), i, i);
 
         }
     }

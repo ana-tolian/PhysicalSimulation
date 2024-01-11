@@ -3,7 +3,7 @@ package an.rozhnov.app.gui.panels.upperPanel;
 import an.rozhnov.app.gui.custom.NButton;
 import an.rozhnov.app.gui.custom.NPanel;
 import an.rozhnov.appState.currentState.AppGlobalState;
-import an.rozhnov.appState.currentState.SimSpeed;
+import an.rozhnov.appState.currentState.SpeedMode;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,7 +55,7 @@ public class SpeedPanel extends NPanel implements ActionListener {
 
         } else {
             AppGlobalState.paused = false;
-            AppGlobalState.simSpeed = SimSpeed.dt(Integer.parseInt(e.getActionCommand()) - 1);
+            AppGlobalState.speedMode = SpeedMode.dt(Integer.parseInt(e.getActionCommand()) - 1);
         }
     }
 

@@ -40,5 +40,15 @@
         <eps> 10 </eps>
         <color> (0,200,0)</color>
     </particle>
+    <particle>
+        <name> Wall </name>
+        <type> Wal </type>
+        <radius> 1  </radius>
+        <mass>  0   </mass>
+        <temperature> 283 </temperature>
+        <rmin> 1 </rmin>
+        <eps> 200 </eps>
+        <color> (200,200,200)</color>
+    </particle>
 <!-- etc -->
 </particles>
