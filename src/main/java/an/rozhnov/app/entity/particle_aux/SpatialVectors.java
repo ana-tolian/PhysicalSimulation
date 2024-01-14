@@ -9,6 +9,7 @@ import java.util.Objects;
 import static an.rozhnov.appState.currentState.AppGlobalState.speedMode;
 import static java.lang.Math.abs;
 
+
 public class SpatialVectors {
 
     public Vector2D r;
@@ -23,24 +24,31 @@ public class SpatialVectors {
         this.f = f;
     }
 
-    public void calculateAcceleration(double mass) {
+    public void calculateAccelerationAndVelocity(double mass) {
         if (mass != 0) {
             if (AppGlobalState.gravityEnabled)
                 f.y += PredefinedParameters.GRAVITY * mass;
 
+            double old_ax = a.x;
+            double old_ay = a.y;
             a.x = f.x / mass * speedMode.dt();
             a.y = f.y / mass * speedMode.dt();
-        }
 
-        f.x = 0;
-        f.y = 0;
+            // Verlet integration
+            v.x += speedMode.dt() * 0.5 * (old_ax + a.x);
+            v.y += speedMode.dt() * 0.5 * (old_ay + a.y);;
+            limit(v, 10);
+        }
     }
 
     public void move (double mass) {
-        calculateAcceleration(mass);
+        calculateAccelerationAndVelocity(mass);
+        r.x += v.x * speedMode.dt()  +  0.5 * a.x * speedMode.dt()*speedMode.dt();
+        r.y += v.y * speedMode.dt()  +  0.5 * a.y * speedMode.dt()*speedMode.dt();
 
-        r.x += v.x * speedMode.dt() * speedMode.dt();
-        r.y += v.y * speedMode.dt() * speedMode.dt();
+        f.x = 0;
+        f.y = 0;
+//        System.out.println(this);
     }
 
     public void applyForces (double fx, double fy) {
@@ -48,16 +56,16 @@ public class SpatialVectors {
         f.y += fy;
     }
 
-    public double calculateLennardJones (Potential potential, double R) {
-        double sigma_r2 = potential.getRmin()*potential.getRmin() / R;
+    public double calculateLennardJones (double rmin, double eps, double R) {
+        double sigma_r2 = rmin*rmin / R;
         double sigma_r6 = sigma_r2 * sigma_r2 * sigma_r2;
         double sigma_r12 = sigma_r6*sigma_r6;
-        double LJ = 4 * potential.getEps() * (sigma_r12 - 2*sigma_r6);
+        double LJ = 4 * eps * (sigma_r12 - 2*sigma_r6);
 
-        if (Double.isNaN(LJ))
-            return -10.0;
-        if (Math.abs(LJ) > 10)
-            LJ = 10 * (LJ < 0 ? -1 : 1);
+        if (Double.isNaN(LJ) || LJ > 100)
+            return 100.0;
+        if (LJ < 0)
+            LJ = -10;
         return LJ;
     }
 
@@ -68,8 +76,6 @@ public class SpatialVectors {
 
     private double limit (double c, double limit) {
         if (abs(c) > limit || Double.isNaN(c) || Double.isInfinite(c)) {
-            if (limit == 5.0)
-                System.out.println(c);
             double temp = c;
             c = limit;
 
@@ -105,7 +111,7 @@ public class SpatialVectors {
 
     @Override
     public String toString () {
-        return String.format("x: %4.3f y: %4.3f vx: %2.3f vy: %2.3f fx: %2.3f fy: %2.3f", r.x, r.y, v.x, v.y, f.x, f.y);
+        return String.format("x: %4.3f y: %4.3f vx: %2.3f vy: %2.3f ax: %2.3f ay: %2.3f", r.x, r.y, v.x, v.y, a.x, a.y);
     }
 
     @Override

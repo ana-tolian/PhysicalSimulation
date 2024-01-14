@@ -26,8 +26,8 @@ public class Particle {
         scalableGraphics.fillOval((int) (vectors.r.x - getRadius()), (int) (vectors.r.y - getRadius()), (int) (getRadius()), (int) (getRadius()));
     }
 
-    public double calculateLennardJones (double R) {
-        return vectors.calculateLennardJones(potential, R);
+    public double calculateLennardJones (Particle anotherParticle, double R) {
+        return vectors.calculateLennardJones(this.potential.getRmin(anotherParticle), this.potential.getEps(anotherParticle), R);
     }
 
     public void moveBack () {
@@ -36,14 +36,6 @@ public class Particle {
 
     public void move () {
         vectors.move(phyParams.getMass());
-    }
-
-    public void bounceOffHorizontalWall () {
-        vectors.v.y = -vectors.v.y;
-    }
-
-    public void bounceOffVerticalWall () {
-        vectors.v.x = -vectors.v.x;
     }
 
     public double getX() {

@@ -3,6 +3,7 @@ package an.rozhnov.app.entity.builders;
 import an.rozhnov.app.entity.Particle;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class ParticleDirector {
 
@@ -19,7 +20,7 @@ public class ParticleDirector {
 
     public Particle createStaticParticle (double x, double y) {
         particleBuilder.setLabel("Unknown", "unk");
-        particleBuilder.setVectors(x, y, 0, 0, 0, 0);
+        particleBuilder.setVectors(x, y, 0, 0, 0, 0, 0, 0);
         return particleBuilder.createParticle();
     }
 
@@ -29,11 +30,11 @@ public class ParticleDirector {
 
     public Particle createMovingParticle (double x, double y, double vx, double vy) {
         particleBuilder.setLabel("Unknown", "unk");
-        particleBuilder.setVectors(x, y, vx, vy, 0, 0);
+        particleBuilder.setVectors(x, y, vx, vy, 0, 0, 0, 0);
         return particleBuilder.createParticle();
     }
 
-    public Particle createParticleForPalette (int radius, double mass, double t, double eps, double rmin, Color color) {
+    public Particle createParticleForPalette (int radius, double mass, double t, HashMap<String, Double> eps, HashMap<String, Double> rmin, Color color) {
         particleBuilder.setLabel("Unknown", "unk");
         particleBuilder.setPhyParams(t, mass, radius, color);
         particleBuilder.setPotential(rmin, eps);
@@ -42,7 +43,7 @@ public class ParticleDirector {
 
     public Particle createParticleFromBrush (Particle p, double x, double y) {
         particleBuilder.setLabel(p.getLabel());
-        particleBuilder.setVectors(x + p.getPhyParams().getRadius(), y + p.getPhyParams().getRadius(), 0, 0, 0, 0);
+        particleBuilder.setVectors(x + p.getPhyParams().getRadius(), y + p.getPhyParams().getRadius(), 0, 0, 0, 0, 0, 0);
         particleBuilder.setPhyParams(p.getPhyParams());
         particleBuilder.setPotential(p.getPotential());
         return particleBuilder.createParticle();
@@ -50,7 +51,7 @@ public class ParticleDirector {
 
     public Particle createMovingParticleFromBrush (Particle p, double x, double y, double vx, double vy) {
         particleBuilder.setLabel(p.getLabel());
-        particleBuilder.setVectors(x + p.getPhyParams().getRadius(), y + p.getPhyParams().getRadius(), vx, vy, 0, 0);
+        particleBuilder.setVectors(x + p.getPhyParams().getRadius(), y + p.getPhyParams().getRadius(), vx, vy, 0, 0, 0, 0);
         particleBuilder.setPhyParams(p.getPhyParams());
         particleBuilder.setPotential(p.getPotential());
         return particleBuilder.createParticle();

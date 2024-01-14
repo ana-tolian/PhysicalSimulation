@@ -8,12 +8,13 @@ import an.rozhnov.app.entity.particle_aux.Potential;
 import an.rozhnov.app.entity.particle_aux.SpatialVectors;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class ParticleBuilder {
 
     private Label label = new Label("Unknown", "Unk");
     private SpatialVectors vectors = new SpatialVectors(new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,0));
-    private Potential potential = new Potential(0,0);
+    private Potential potential = new Potential();
     private PhyParams phyParams = new PhyParams(283, 1, 1, Color.WHITE);
 
 
@@ -33,7 +34,7 @@ public class ParticleBuilder {
         this.label = label;
     }
 
-    public void setPotential (double rmin, double eps) {
+    public void setPotential (HashMap<String, Double> rmin, HashMap<String, Double> eps) {
         this.potential = new Potential(rmin, eps);
     }
 
@@ -88,11 +89,11 @@ public class ParticleBuilder {
         }
 
         if (param.equals("eps")) {
-            potential.setEps(Double.parseDouble(value.trim()));
+//            potential.setEps(Double.parseDouble(value.trim()));
         }
 
         if (param.equals("rmin")) {
-            potential.setRmin(Double.parseDouble(value.trim()));
+//            potential.setRmin(Double.parseDouble(value.trim()));
         }
 
         if (param.equals("color")) {

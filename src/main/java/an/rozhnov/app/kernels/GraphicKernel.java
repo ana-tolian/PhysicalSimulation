@@ -4,6 +4,7 @@ import an.rozhnov.app.entity.Particle;
 import an.rozhnov.app.kernels.drivers.FPSController;
 import an.rozhnov.app.kernels.drivers.drawing.DrawingDriver;
 import an.rozhnov.app.kernels.drivers.drawing.PredefinedColors;
+import an.rozhnov.app.kernels.drivers.particle.QueueControl;
 import an.rozhnov.app.kernels.drivers.particle.RegionMap;
 import an.rozhnov.app.kernels.drivers.drawing.ScalableGraphics;
 import an.rozhnov.appState.currentState.AppGlobalState;
@@ -12,6 +13,7 @@ import an.rozhnov.appState.currentState.DrawingMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -60,17 +62,14 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         drawGrid();
         drawInfo();
 
-        Iterator<Particle> iterator = particles.stream().iterator();
+        Iterator<Particle> iterator = particles.iterator();
         Particle p;
 
         while (iterator.hasNext()) {
             p = iterator.next();
+
             drawVector(p);
             drawField(p);
-
-//            g2.drawLine((int)p.getX(), (int)p.getY(), (int) (p.rx + p.getX()), (int) (p.ry + p.getY()));
-//            g2.setColor(Color.CYAN);
-//            g2.drawString("" + mainKernel.regionMap.toRegionIndex((int) p.getX(), (int) p.getY()), (int) p.getX(), (int) p.getY() - 10);
             p.draw(scalableGraphics);
         }
         if (AppGlobalState.drawingMode != DrawingMode.BRUSH && drag) {
@@ -120,7 +119,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
 
         double f;
         for (int i = 1; i < 32; i+=2) {
-            f = p.calculateLennardJones(i);
+            f = p.calculateLennardJones(p, i);
 
             if (f < 0)
                 scalableGraphics.setColor(PredefinedColors.NEGATIVE_FIELD_COLOR);
@@ -166,7 +165,6 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
 
         if (AppGlobalState.drawingMode == DrawingMode.BRUSH) {
             drawingDriver.draw(mx2, my2);
-        } else if (AppGlobalState.drawingMode == DrawingMode.FILLED_RECTANGLE) {
         }
     }
 

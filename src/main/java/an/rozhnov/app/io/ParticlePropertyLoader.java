@@ -33,14 +33,18 @@ public class ParticlePropertyLoader {
             Node root = document.getDocumentElement();
             NodeList particles = root.getChildNodes();
 
+            // Go through the list of particles
             for (int i = 0; i < particles.getLength(); i++) {
                 Node particle = particles.item(i);
+                HashMap<String, Double> rmin = new HashMap<>();
+                HashMap<String, Double> eps = new HashMap<>();
                 String type = "null";
 
                 if (particle.getNodeType() != Node.TEXT_NODE) {
                     ParticleBuilder builder = new ParticleBuilder();
                     NodeList attributes = particle.getChildNodes();
 
+                    // Parsing particle parameters
                     for (int j = 0; j < attributes.getLength(); j++) {
                         Node attribute = attributes.item(j);
 
@@ -50,8 +54,34 @@ public class ParticlePropertyLoader {
 
                         if (attribute.getNodeName().equals("type"))
                             type = attribute.getTextContent();
+
+                        // Parsing potential parameters of particle
+                        if (attribute.getNodeName().equals("potential")) {
+                            NodeList potentialRecords = attribute.getChildNodes();
+                            String potentialType = "null";
+
+                            for (int k = 0; k < potentialRecords.getLength(); k++) {
+                                NodeList potentialRecord = potentialRecords.item(k).getChildNodes();
+
+                                for (int m = 0; m < potentialRecord.getLength(); m++) {
+                                    Node potentialParam = potentialRecord.item(m);
+
+                                    if (potentialParam.getChildNodes().item(0) == null)
+                                        continue;
+
+                                    if (potentialParam.getNodeName().equals("type"))
+                                        potentialType = potentialParam.getTextContent();
+
+                                    if (potentialParam.getNodeName().equals("rmin") && !potentialType.equals("null"))
+                                        rmin.put(potentialType, Double.parseDouble(potentialParam.getTextContent()));
+                                    else if (potentialParam.getNodeName().equals("eps") && !potentialType.equals("null"))
+                                        eps.put(potentialType, Double.parseDouble(potentialParam.getTextContent()));
+                                }
+                            }
+                        }
                     }
 
+                    builder.setPotential(rmin, eps);
                     Particle p = builder.createParticle();
                     if (!type.equals("null"))
                         PALETTE.put(type, p);

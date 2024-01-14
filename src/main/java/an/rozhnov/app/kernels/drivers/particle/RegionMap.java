@@ -6,7 +6,6 @@ import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 import static an.rozhnov.appState.currentState.AppGlobalState.mousePointer;
@@ -14,10 +13,9 @@ import static an.rozhnov.appState.currentState.AppGlobalState.mousePointer;
 
 public class RegionMap {
 
-    private final int squareSideLength = 4;
-    private final int squareDim = (int) (Math.log(squareSideLength) / Math.log(2));
-    private final int sqX = ScalableGraphics.LOGICAL_WIDTH >> squareDim;
-    private final int sqY = ScalableGraphics.LOGICAL_HEIGHT >> squareDim;
+    private final int squareSideLength = 5;
+    private final int sqX = ScalableGraphics.LOGICAL_WIDTH;
+    private final int sqY = ScalableGraphics.LOGICAL_HEIGHT;
 
     private final int size = sqX * sqY;
 
@@ -38,39 +36,53 @@ public class RegionMap {
 
     public void add (Particle p) {
         particles.add(p);
-        regions.get(toRegionIndex(p)).add(p);
+        regions.get(to1DIndex(p)).add(p);
     }
 
     public void remove (Particle p) {
         particles.remove(p);
-        regions.get(toRegionIndex(p)).remove(p);
+        regions.get(to1DIndex(p)).remove(p);
     }
 
-    public void updateRegion (Particle p) {
-        int index = toRegionIndex(p);
+    public void clearFromField (Particle p) {
+        int index = to1DIndex(p);
         if (!inBorders(index))
             return;
 
         regions.get(index).remove(p);
-        regions.get(index).add(p);
     }
 
-    public int toRegionIndex (Particle p) {
-        return toRegionIndex((int) p.getX(), (int) p.getY());
+    public void updateField(int oldIndex, Particle p) {
+        if (!inBorders(oldIndex))
+            return;
+
+        int newIndex = to1DIndex(p);
+        regions.get(oldIndex).remove(p);
+
+        if (!inBorders(newIndex)) return;
+        regions.get(newIndex).add(p);
     }
 
-    public int toRegionIndex (int x, int y) {
-        return (x >> squareDim) + (y >> squareDim) * sqX;
+    public int to1DIndex(Particle p) {
+        if (p == null)
+            return -1;
+        return to1DIndex((int) p.getX(), (int) p.getY());
     }
 
-    public Rectangle findByCoords (int x, int y) {
-        return toCoords(toRegionIndex(x, y));
+    public int to1DIndex(int x, int y) {
+        if (inBorders(x, y))
+            return x + y*sqX;
+        return -1;
     }
 
-    public Rectangle toCoords (int index) {
-        int x = index % sqX;
-        int y = index / sqX;
-        return new Rectangle(x, y, x + squareDim, y + squareDim);
+    public HashSet<Particle> findByCoords (Particle p) {
+        return findByCoords((int) p.getX(), (int) p.getY());
+    }
+
+    public HashSet<Particle> findByCoords (int x, int y) {
+        if (inBorders(x, y))
+            return regions.get(to1DIndex(x, y));
+        return new HashSet<>();
     }
 
     public HashSet<Particle> getParticlesInRegion (int index) {
@@ -90,7 +102,7 @@ public class RegionMap {
 
         for (int x = x1; x < x2; x += squareSideLength)
             for (int y = y1; y < y2; y += squareSideLength)
-                indexes.add(toRegionIndex(x, y));
+                indexes.add(to1DIndex(x, y));
 
         for (int i = 0; i < indexes.size(); i++) {
             HashSet<Particle> region = getParticlesInRegion(indexes.get(i));
@@ -105,7 +117,7 @@ public class RegionMap {
 
     public Particle getObservedParticle () {
         Particle particle = null;
-        for (Particle p : getParticlesInRegion(toRegionIndex(mousePointer.x, mousePointer.y))) {
+        for (Particle p : getParticlesInRegion(to1DIndex(mousePointer.x, mousePointer.y))) {
             if (((int) (p.getX())) == mousePointer.x && ((int) (p.getY())) == mousePointer.y) {
                 particle = p;
             }
@@ -113,58 +125,58 @@ public class RegionMap {
         return particle;
     }
 
-    public HashSet<Particle> findAllNeighbours (Particle p) {
-        int index = toRegionIndex(p);
+//    public HashSet<Particle> findAllNeighbours (Particle p) {
+//        int index = toRegionIndex(p);
+//
+//        boolean inBorders = inBorders(index);
+//        if (!inBorders)
+//            return new HashSet<>();
+//
+//        boolean north = index - sqX >= 0;
+//        boolean south = index + sqX < size - 1;
+//        boolean west = index % sqX != 0;
+//        boolean east = index - 1 % sqX != 0;
+//
+//        HashSet<Particle> neighbouringParticles = new HashSet<>(index);
+//
+//        if (north)
+//            unite(neighbouringParticles, regions.get(index - sqX));
+//
+//        if (south)
+//            unite(neighbouringParticles, regions.get(index + sqX));
+//
+//        if (west) {
+//            unite(neighbouringParticles, regions.get(index - 1));
+//
+//            if (north)   // North-West
+//                unite(neighbouringParticles, regions.get(index - sqX - 1));
+//            if (south)   // South-West
+//                unite(neighbouringParticles, regions.get(index + sqX - 1));
+//        }
+//
+//        if (east) {
+//            unite(neighbouringParticles, regions.get(index + 1));
+//
+//            if (north)   // North-East
+//                unite(neighbouringParticles, regions.get(index - sqX + 1));
+//            if (south)   // South-East
+//                unite(neighbouringParticles, regions.get(index + sqX + 1));
+//        }
+//
+////        System.out.println(sqX + " " + sqY + " " + index);
+////        System.out.println(neighbouringParticles.size() + " " + regions.get(index - sqX).size() + " " + regions.get(index + sqX).size()
+////                + " " + regions.get(index - 1).size() + " " + regions.get(index + 1).size() + " " + regions.get(index - sqX - 1).size() + " "
+////                + regions.get(index - sqX + 1).size() + " " + regions.get(index + sqX + 1).size());
+////        System.out.println(regions.get(index - sqX).size() + regions.get(index + sqX).size()
+////                + regions.get(index - 1).size() + regions.get(index + 1).size() + regions.get(index - sqX - 1).size()
+////                + regions.get(index - sqX + 1).size() + regions.get(index + sqX + 1).size());
+//
+//        return neighbouringParticles;
+//    }
 
-        boolean inBorders = inBorders(index);
-        if (!inBorders)
-            return new HashSet<>();
-
-        boolean north = index - sqX >= 0;
-        boolean south = index + sqX < size - 1;
-        boolean west = index % sqX != 0;
-        boolean east = index - 1 % sqX != 0;
-
-        HashSet<Particle> neighbouringParticles = new HashSet<>(index);
-
-        if (north)
-            unite(neighbouringParticles, regions.get(index - sqX));
-
-        if (south)
-            unite(neighbouringParticles, regions.get(index + sqX));
-
-        if (west) {
-            unite(neighbouringParticles, regions.get(index - 1));
-
-            if (north)   // North-West
-                unite(neighbouringParticles, regions.get(index - sqX - 1));
-            if (south)   // South-West
-                unite(neighbouringParticles, regions.get(index + sqX - 1));
-        }
-
-        if (east) {
-            unite(neighbouringParticles, regions.get(index + 1));
-
-            if (north)   // North-East
-                unite(neighbouringParticles, regions.get(index - sqX + 1));
-            if (south)   // South-East
-                unite(neighbouringParticles, regions.get(index + sqX + 1));
-        }
-
-//        System.out.println(sqX + " " + sqY + " " + index);
-//        System.out.println(neighbouringParticles.size() + " " + regions.get(index - sqX).size() + " " + regions.get(index + sqX).size()
-//                + " " + regions.get(index - 1).size() + " " + regions.get(index + 1).size() + " " + regions.get(index - sqX - 1).size() + " "
-//                + regions.get(index - sqX + 1).size() + " " + regions.get(index + sqX + 1).size());
-//        System.out.println(regions.get(index - sqX).size() + regions.get(index + sqX).size()
-//                + regions.get(index - 1).size() + regions.get(index + 1).size() + regions.get(index - sqX - 1).size()
-//                + regions.get(index - sqX + 1).size() + regions.get(index + sqX + 1).size());
-
-        return neighbouringParticles;
-    }
-
-    private void unite(HashSet<Particle> neighbouringParticles, HashSet<Particle> temp) {
-        Collections.addAll(neighbouringParticles, temp.toArray(new Particle[0]));
-    }
+//    private void unite(HashSet<Particle> neighbouringParticles, HashSet<Particle> temp) {
+//        Collections.addAll(neighbouringParticles, temp.toArray(new Particle[0]));
+//    }
 
     public void clear () {
         for (int i = 0; i < size; i++)
@@ -173,8 +185,16 @@ public class RegionMap {
         AppGlobalState.clearSheduled = false;
     }
 
-    private boolean inBorders (int index) {
+    public boolean inBorders (int index) {
         return index >= 0 && index < size - 1;
+    }
+
+    public boolean inBorders (Particle p) {
+        return inBorders((int) p.getX(), (int) p.getY());
+    }
+
+    public boolean inBorders (int x, int y) {
+        return x >= 0 && x < sqX - 1 && y >= 0 && y < sqY - 1;
     }
 
     public HashSet<Particle> getParticles() {

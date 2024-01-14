@@ -14,7 +14,8 @@ public class FPSController {
     }
 
     public static int getSleepingTime () {
-        return Math.max(20 - cycleTime, 0);
+        return 1;
+//        return Math.max(20 - cycleTime, 0);
     }
 
     public static long getFPS () {

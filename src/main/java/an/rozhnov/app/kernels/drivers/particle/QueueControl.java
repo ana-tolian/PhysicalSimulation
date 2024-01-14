@@ -24,8 +24,11 @@ public class QueueControl {
     }
 
     public void addNewParticles () {
+        Particle p;
         for (int i = 0; i < addQueue.size(); i++) {
-            regionMap.add(addQueue.pollFirst());
+            p = addQueue.pollFirst();
+            if (p != null && regionMap.inBorders(p))
+                regionMap.add(p);
         }
     }
 

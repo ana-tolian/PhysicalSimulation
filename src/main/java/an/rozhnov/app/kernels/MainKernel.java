@@ -15,7 +15,7 @@ public class MainKernel implements Runnable {
     private final GraphicKernel graphicKernel;
     private final MotionKernel motionKernel;
 
-    private final QueueControl queue;
+    private final QueueControl queueControl;
     private final DrawingDriver drawingDriver;
     public final RegionMap regionMap;
 
@@ -24,8 +24,8 @@ public class MainKernel implements Runnable {
         this.mainPanel = mainPanel;
 
         regionMap = new RegionMap();
-        queue = new QueueControl(regionMap);
-        drawingDriver = new DrawingDriver(queue);
+        queueControl = new QueueControl(regionMap);
+        drawingDriver = new DrawingDriver(queueControl);
 
         graphicKernel = new GraphicKernel(drawingDriver, regionMap);
         motionKernel = new MotionKernel(this);
@@ -39,7 +39,7 @@ public class MainKernel implements Runnable {
         while (true) {
             FPSController.startMeasuring();
             sleep(FPSController.getSleepingTime());
-            queue.addNewParticles();
+            queueControl.addNewParticles();
             mainPanel.setBottomPanelInfoLabel((onPanel() ? regionMap.getObservedParticle() : null));
             graphicKernel.repaint();
 
