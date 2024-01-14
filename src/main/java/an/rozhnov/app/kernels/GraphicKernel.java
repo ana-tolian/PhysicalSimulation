@@ -13,9 +13,7 @@ import an.rozhnov.appState.currentState.DrawingMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ConcurrentModificationException;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import static an.rozhnov.appState.PredefinedParameters.*;
 import static an.rozhnov.appState.currentState.AppGlobalState.particleBrush;
@@ -26,7 +24,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
     private final RegionMap regionMap;
     private final DrawingDriver drawingDriver;
     private final ScalableGraphics scalableGraphics;
-    private final HashSet<Particle> particles;
+    private final ArrayList<Particle> particles;
 
     private boolean drag = false;
     private int mx1;
@@ -62,19 +60,17 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         drawGrid();
         drawInfo();
 
-        Iterator<Particle> iterator = particles.iterator();
         Particle p;
-
-        while (iterator.hasNext()) {
-            p = iterator.next();
+        for (int i = 0; i < particles.size(); i++) {
+            p = particles.get(i);
 
             drawVector(p);
             drawField(p);
             p.draw(scalableGraphics);
         }
-        if (AppGlobalState.drawingMode != DrawingMode.BRUSH && drag) {
+
+        if (AppGlobalState.drawingMode != DrawingMode.BRUSH && drag)
             pre_drawShape();
-        }
     }
 
     private void drawPanel () {

@@ -1,7 +1,8 @@
 package an.rozhnov.app.kernels.devControl;
 
 import an.rozhnov.app.entity.Particle;
-import java.util.HashSet;
+
+import java.util.ArrayList;
 
 public class LoadMeasurer {
 
@@ -11,10 +12,10 @@ public class LoadMeasurer {
     private long opAccelerated = 0l;
 
     private long timeMark = 0l;
-    private HashSet<Particle> particles;
+    private ArrayList<Particle> particles;
 
 
-    public LoadMeasurer (HashSet<Particle> particles) {
+    public LoadMeasurer (ArrayList<Particle> particles) {
         this.particles = particles;
     }
 

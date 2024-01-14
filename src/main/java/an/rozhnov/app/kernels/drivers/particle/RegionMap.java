@@ -20,11 +20,11 @@ public class RegionMap {
     private final int size = sqX * sqY;
 
     private final ArrayList<HashSet<Particle>> regions;
-    private final HashSet<Particle> particles;
+    private final ArrayList<Particle> particles;
 
 
     public RegionMap () {
-        particles = new HashSet<>();
+        particles = new ArrayList<>();
         regions = new ArrayList<>();
         build();
     }
@@ -197,7 +197,7 @@ public class RegionMap {
         return x >= 0 && x < sqX - 1 && y >= 0 && y < sqY - 1;
     }
 
-    public HashSet<Particle> getParticles() {
+    public ArrayList<Particle> getParticles() {
         return particles;
     }
 
