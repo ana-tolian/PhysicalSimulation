@@ -28,7 +28,7 @@ public class MainKernel implements Runnable {
         drawingDriver = new DrawingDriver(queueControl);
 
         graphicKernel = new GraphicKernel(drawingDriver, regionMap);
-        motionKernel = new MotionKernel(this);
+        motionKernel = new MotionKernel(regionMap);
 
         Thread t = new Thread(this);
         t.start();

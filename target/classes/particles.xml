@@ -103,17 +103,17 @@
         <potential>
             <rec>
                 <type>Oxy</type>
-                <rmin>0.1</rmin>
+                <rmin>0.05</rmin>
                 <eps>10000</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin>0.1</rmin>
+                <rmin>0.05</rmin>
                 <eps>10000</eps>
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>0.1</rmin>
+                <rmin>0.05</rmin>
                 <eps>10000</eps>
             </rec>
             <rec>

@@ -14,23 +14,23 @@ import static an.rozhnov.appState.currentState.AppGlobalState.mousePointer;
 public class RegionMap {
 
     private final int squareSideLength = 5;
-    private final int sqX = ScalableGraphics.LOGICAL_WIDTH;
-    private final int sqY = ScalableGraphics.LOGICAL_HEIGHT;
+    private final static int X = ScalableGraphics.LOGICAL_WIDTH;
+    private final static int Y = ScalableGraphics.LOGICAL_HEIGHT;
 
-    private final int size = sqX * sqY;
+    public final int SIZE = X * Y;
 
     private final ArrayList<HashSet<Particle>> regions;
     private final ArrayList<Particle> particles;
 
 
     public RegionMap () {
-        particles = new ArrayList<>();
+        particles = new ArrayList<>(SIZE);
         regions = new ArrayList<>();
         build();
     }
 
     private void build () {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < SIZE; i++)
             regions.add(new HashSet<>());
     }
 
@@ -71,7 +71,7 @@ public class RegionMap {
 
     public int to1DIndex(int x, int y) {
         if (inBorders(x, y))
-            return x + y*sqX;
+            return x + y* X;
         return -1;
     }
 
@@ -104,8 +104,8 @@ public class RegionMap {
             for (int y = y1; y < y2; y += squareSideLength)
                 indexes.add(to1DIndex(x, y));
 
-        for (int i = 0; i < indexes.size(); i++) {
-            HashSet<Particle> region = getParticlesInRegion(indexes.get(i));
+        for (Integer index : indexes) {
+            HashSet<Particle> region = getParticlesInRegion(index);
 
             for (Particle p : region)
                 if (r.contains(new Point((int) p.getX(), (int) p.getY())))
@@ -179,14 +179,14 @@ public class RegionMap {
 //    }
 
     public void clear () {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < SIZE; i++)
             regions.get(i).clear();
         particles.clear();
         AppGlobalState.clearSheduled = false;
     }
 
     public boolean inBorders (int index) {
-        return index >= 0 && index < size - 1;
+        return index >= 0 && index < SIZE - 1;
     }
 
     public boolean inBorders (Particle p) {
@@ -194,23 +194,11 @@ public class RegionMap {
     }
 
     public boolean inBorders (int x, int y) {
-        return x >= 0 && x < sqX - 1 && y >= 0 && y < sqY - 1;
+        return x >= 0 && x < X - 1 && y >= 0 && y < Y - 1;
     }
 
     public ArrayList<Particle> getParticles() {
         return particles;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public int getSqX() {
-        return sqX;
-    }
-
-    public int getSqY() {
-        return sqY;
     }
 
     public int getSquareSideLength() {
