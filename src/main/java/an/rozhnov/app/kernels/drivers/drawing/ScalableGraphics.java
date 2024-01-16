@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class ScalableGraphics {
 
-    private final static int SCALE = 2;
+    private final static int SCALE = 8;
     public final static int SHEAR = (int) (Math.log(SCALE) / Math.log(2));
     public final static int LOGICAL_WIDTH = PredefinedParameters.REAL_SIM_WIDTH / SCALE;
     public final static int LOGICAL_HEIGHT = PredefinedParameters.REAL_SIM_HEIGHT / SCALE;
@@ -67,6 +67,15 @@ public class ScalableGraphics {
     public void fillOval (int x1, int y1, int w, int h) {
         scaleCoords(x1, y1, 0, 0, w, h);
         g2.fillOval(this.x1, this.y1, this.w, this.h);
+    }
+
+    // For particle smooth drawing
+    public void fillOval (double x1, double y1, int w, int h) {
+        x1 *= SCALE;
+        y1 *= SCALE;
+        w *= SCALE;
+        h *= SCALE;
+        g2.fillOval((int) x1, (int) y1, w, h);
     }
 
     private void scaleCoords (int x1, int y1, int x2, int y2, int w, int h) {

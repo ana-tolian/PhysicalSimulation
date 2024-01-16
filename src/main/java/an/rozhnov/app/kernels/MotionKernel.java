@@ -6,50 +6,65 @@ import an.rozhnov.app.kernels.drivers.particle.RegionMap;
 
 public class MotionKernel {
 
-    private final int NUMBER_OF_THREAD_WORKERS = 8;
+    private final int NUMBER_OF_THREAD_WORKERS = 16;
     private final int LOG_THREAD_WORKERS = (int) (Math.log(NUMBER_OF_THREAD_WORKERS) / Math.log(2));
 
     private final RegionMap regionMap;
     private final Thread[] threads;
-    private final ThreadWorker[] workers;
+    private final ImpactThreadWorker[] impactWorkers;
+    private final MoveThreadWorker[] moveWorkers;
 
 
     public MotionKernel (RegionMap regionMap) {
         this.regionMap = regionMap;
         this.threads = new Thread[NUMBER_OF_THREAD_WORKERS];
-        this.workers = new ThreadWorker[NUMBER_OF_THREAD_WORKERS];
+        this.impactWorkers = new ImpactThreadWorker[NUMBER_OF_THREAD_WORKERS];
+        this.moveWorkers = new MoveThreadWorker[NUMBER_OF_THREAD_WORKERS];
 
-        for (int i = 0; i < NUMBER_OF_THREAD_WORKERS; i++)
-            workers[i] = new ThreadWorker(regionMap);
+        for (int i = 0; i < NUMBER_OF_THREAD_WORKERS; i++) {
+            impactWorkers[i] = new ImpactThreadWorker(regionMap);
+            moveWorkers[i]   = new MoveThreadWorker(regionMap);
+        }
     }
 
 
     public void performImpact () {
-        prepareForWork(regionMap.getParticles().size());
+        prepareImpactWorkers(regionMap.getParticles().size());
         startThreads();
         waitForThreads();
     }
 
-    public void moveAll () {
+    public void moveAll (double dt) {
         int oldIndex;
         for (Particle p : regionMap.getParticles()) {
             oldIndex = regionMap.to1DIndex(p);
-            p.move();
+            p.move(dt);
 
             regionMap.updateField(oldIndex, p);
         }
     }
 
-    private void prepareForWork (int size) {
-        int beginIndex, endIndex;
-        int indexWorkload = size >> LOG_THREAD_WORKERS;
-
+    private void prepareImpactWorkers(int size) {
         for (int i = 0; i < NUMBER_OF_THREAD_WORKERS; i++) {
-            beginIndex = i * indexWorkload;
-            endIndex = Math.min(beginIndex + indexWorkload, size);
-            workers[i].setBounds(beginIndex, endIndex);
-            threads[i] = new Thread(workers[i]);
+            setBounds(impactWorkers[i], size, i);
+            threads[i] = new Thread(impactWorkers[i]);
         }
+    }
+
+    private void prepareMoveWorkers(int size, double dt) {
+        for (int i = 0; i < NUMBER_OF_THREAD_WORKERS; i++) {
+            setBounds(moveWorkers[i], size, i);
+            moveWorkers[i].setDt(dt);
+            threads[i] = new Thread(moveWorkers[i]);
+        }
+    }
+
+    private void setBounds (ThreadWorker worker, int size, int i) {
+        int indexWorkload = size >> LOG_THREAD_WORKERS;
+        int beginIndex = i * indexWorkload;
+        int endIndex = Math.min(beginIndex + indexWorkload, size);
+
+        worker.setBounds(beginIndex, endIndex);
     }
 
     private void startThreads () {

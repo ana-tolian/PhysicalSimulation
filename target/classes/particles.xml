@@ -11,16 +11,16 @@
             <rec>
                 <type>Oxy</type>
                 <rmin> 0.95</rmin>
-                <eps>3</eps>
-            </rec>
-            <rec>
-                <type>Hyd</type>
-                <rmin> 0.95</rmin>
                 <eps>5</eps>
             </rec>
             <rec>
+                <type>Hyd</type>
+                <rmin> 1</rmin>
+                <eps>2</eps>
+            </rec>
+            <rec>
                 <type>Sil</type>
-                <rmin>0.9</rmin>
+                <rmin>0.95</rmin>
                 <eps>10</eps>
             </rec>
             <rec>
@@ -41,17 +41,17 @@
         <potential>
             <rec>
                 <type>Oxy</type>
-                <rmin> 0.95</rmin>
-                <eps>3</eps>
+                <rmin> 2</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin> 0.8</rmin>
-                <eps>2</eps>
+                <rmin> 0.95</rmin>
+                <eps>70</eps>
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>0.9</rmin>
+                <rmin>0.95</rmin>
                 <eps>10</eps>
             </rec>
             <rec>
@@ -73,17 +73,17 @@
             <rec>
                 <type>Oxy</type>
                 <rmin> 0.95</rmin>
-                <eps>3</eps>
+                <eps>5</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin> 0.8</rmin>
-                <eps>2</eps>
+                <rmin> 0.95</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>2</rmin>
-                <eps>10</eps>
+                <rmin>0.95</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Wal</type>

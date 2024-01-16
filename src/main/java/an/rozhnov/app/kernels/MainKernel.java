@@ -50,7 +50,8 @@ public class MainKernel implements Runnable {
                 continue;
 
             motionKernel.performImpact();
-            motionKernel.moveAll();
+            motionKernel.moveAll(AppGlobalState.speedMode.dt());
+
             FPSController.stopMeasuring();
         }
     }

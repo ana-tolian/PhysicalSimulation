@@ -23,19 +23,21 @@ public class Particle {
 
     public void draw (ScalableGraphics scalableGraphics) {
         scalableGraphics.setColor(phyParams.getColor());
-        scalableGraphics.fillOval((int) (vectors.r.x - getRadius()), (int) (vectors.r.y - getRadius()), (int) (getRadius()), (int) (getRadius()));
+        scalableGraphics.fillOval((vectors.r.x - getRadius()), (vectors.r.y - getRadius()), (getRadius()),  (getRadius()));
     }
 
-    public double calculateLennardJones (Particle anotherParticle, double R) {
-        return vectors.calculateLennardJones(this.potential.getRmin(anotherParticle), this.potential.getEps(anotherParticle), R);
+    public double calculateLennardJones (Particle anotherParticle, double invR) {
+        return vectors.calculateLennardJones(this.potential.getRmin(anotherParticle),
+                                            this.potential.getEps(anotherParticle),
+                                            invR);
     }
 
-    public void moveBack () {
-        vectors.move(phyParams.getMass() * -1);
+    public void moveBack (double dt) {
+        vectors.move(dt, phyParams.getMass() * -1);
     }
 
-    public void move () {
-        vectors.move(phyParams.getMass());
+    public void move (double dt) {
+        vectors.move(dt, phyParams.getMass());
     }
 
     public double getX() {

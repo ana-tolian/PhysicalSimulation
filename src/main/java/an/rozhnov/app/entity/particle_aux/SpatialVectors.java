@@ -6,7 +6,6 @@ import an.rozhnov.appState.currentState.AppGlobalState;
 
 import java.util.Objects;
 
-import static an.rozhnov.appState.currentState.AppGlobalState.speedMode;
 import static java.lang.Math.abs;
 
 
@@ -24,31 +23,30 @@ public class SpatialVectors {
         this.f = f;
     }
 
-    public void calculateAccelerationAndVelocity(double mass) {
+    public void calculateAccelerationAndVelocity(double dt, double mass) {
         if (mass != 0) {
             if (AppGlobalState.gravityEnabled)
                 f.y += PredefinedParameters.GRAVITY * mass;
 
             double old_ax = a.x;
             double old_ay = a.y;
-            a.x = f.x / mass * speedMode.dt();
-            a.y = f.y / mass * speedMode.dt();
+            a.x = f.x / mass * dt;
+            a.y = f.y / mass * dt;
 
             // Verlet integration
-            v.x += speedMode.dt() * 0.5 * (old_ax + a.x);
-            v.y += speedMode.dt() * 0.5 * (old_ay + a.y);;
+            v.x += dt * 0.5 * (old_ax + a.x);
+            v.y += dt * 0.5 * (old_ay + a.y);;
             limit(v, 10);
         }
     }
 
-    public void move (double mass) {
-        calculateAccelerationAndVelocity(mass);
-        r.x += v.x * speedMode.dt()  +  0.5 * a.x * speedMode.dt()*speedMode.dt();
-        r.y += v.y * speedMode.dt()  +  0.5 * a.y * speedMode.dt()*speedMode.dt();
+    public void move (double dt, double mass) {
+        calculateAccelerationAndVelocity(dt, mass);
+        r.x += v.x * dt  +  0.5 * a.x * dt*dt;
+        r.y += v.y * dt  +  0.5 * a.y * dt*dt;
 
         f.x = 0;
         f.y = 0;
-//        System.out.println(this);
     }
 
     public void applyForces (double fx, double fy) {
@@ -56,11 +54,11 @@ public class SpatialVectors {
         f.y += fy;
     }
 
-    public double calculateLennardJones (double rmin, double eps, double R) {
-        double sigma_r2 = rmin*rmin / R;
+    public double calculateLennardJones (double rmin, double eps, double invR) {
+        double sigma_r2 = rmin*rmin * invR;
         double sigma_r6 = sigma_r2 * sigma_r2 * sigma_r2;
         double sigma_r12 = sigma_r6*sigma_r6;
-        double LJ = 4 * eps * (sigma_r12 - 2*sigma_r6);
+        double LJ = 4 * eps * invR * (sigma_r12 - 2*sigma_r6);
 
         if (Double.isNaN(LJ) || LJ > 100)
             return 100.0;

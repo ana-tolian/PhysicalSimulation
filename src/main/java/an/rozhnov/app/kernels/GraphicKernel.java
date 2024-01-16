@@ -83,7 +83,7 @@ public class GraphicKernel extends JPanel implements MouseListener, MouseMotionL
         scalableGraphics.setFont(new Font("Courier New", Font.PLAIN, 15));
         scalableGraphics.drawString("Current sim speed: " + ((AppGlobalState.paused) ?  "PAUSED" : AppGlobalState.speedMode), 10, 25);
         scalableGraphics.drawString("Particles: " + particles.size(), 10, 40);
-        scalableGraphics.drawString("FPS: " + FPSController.cycleTime, 10, 55);
+        scalableGraphics.drawString(String.format("Cycle length: %d", FPSController.cycleTime), 10, 55);
     }
 
     private void drawVector (Particle p) {
