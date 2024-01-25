@@ -8,10 +8,10 @@ import an.rozhnov.app.kernels.drivers.drawing.ScalableGraphics;
 
 public class Particle {
 
-    private Label label;
-    private SpatialVectors vectors;
-    private Potential potential;
-    private PhyParams phyParams;
+    private final Label label;
+    private final SpatialVectors vectors;
+    private final Potential potential;
+    private final PhyParams phyParams;
 
 
     public Particle(Label label, SpatialVectors vectors, Potential potential, PhyParams phyParams) {
@@ -30,6 +30,10 @@ public class Particle {
         return vectors.calculateLennardJones(this.potential.getRmin(anotherParticle),
                                             this.potential.getEps(anotherParticle),
                                             invR);
+    }
+
+    public double calculateLennardJones (double sigma, double eps, double invR) {
+        return vectors.calculateLennardJones(sigma, eps, invR);
     }
 
     public void moveBack (double dt) {

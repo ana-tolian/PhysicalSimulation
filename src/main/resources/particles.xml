@@ -4,7 +4,7 @@
         <name> Oxygen </name>
         <type> Oxy </type>
         <radius> 1  </radius>
-        <mass>  16   </mass>
+        <mass>  1   </mass>
         <temperature> 283 </temperature>
         <color> (255,0,0)</color>
         <potential>
@@ -26,7 +26,7 @@
             <rec>
                 <type>Wal</type>
                 <rmin> 1</rmin>
-                <eps>0</eps>
+                <eps>1</eps>
             </rec>
         </potential>
     </particle>
@@ -57,7 +57,7 @@
             <rec>
                 <type>Wal</type>
                 <rmin> 1</rmin>
-                <eps>0</eps>
+                <eps>1</eps>
             </rec>
         </potential>
     </particle>
@@ -82,13 +82,13 @@
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>0.95</rmin>
+                <rmin>0.7</rmin>
                 <eps>1</eps>
             </rec>
             <rec>
                 <type>Wal</type>
                 <rmin> 1</rmin>
-                <eps>0</eps>
+                <eps>1</eps>
             </rec>
         </potential>
     </particle>
@@ -103,23 +103,23 @@
         <potential>
             <rec>
                 <type>Oxy</type>
-                <rmin>0.05</rmin>
-                <eps>10000</eps>
+                <rmin>1</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin>0.05</rmin>
-                <eps>10000</eps>
+                <rmin>1</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>0.05</rmin>
-                <eps>10000</eps>
+                <rmin>1</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Wal</type>
                 <rmin> 1</rmin>
-                <eps>0</eps>
+                <eps>1</eps>
             </rec>
         </potential>
     </particle>

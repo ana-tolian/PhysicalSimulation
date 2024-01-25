@@ -23,9 +23,9 @@ public class ImpactThreadWorker extends ThreadWorker implements Runnable {
     private void performImpact (Particle p1) {
         // Look for any neighbours in the square centered on p1.
         // We are only looking for particles that right and down from particle p1
-        for (int x = (int) p1.getX(); x < p1.getX() + 2; x++) {
+        for (int x = (int) p1.getX() - 2; x <= p1.getX() + 2; x++) {
 
-            for (int y = (int) p1.getY(); y < p1.getY() + 2; y++) {
+            for (int y = (int) p1.getY() - 2; y <= p1.getY() + 2; y++) {
 
                 for (Particle p2 : regionMap.findByCoords(x, y)) {
 
@@ -43,11 +43,11 @@ public class ImpactThreadWorker extends ThreadWorker implements Runnable {
                     double R = rx * rx + ry * ry;
                     double invR = 1 / R;
 
-                    double PLJ_p1_to_p2 = p1.calculateLennardJones(p2, invR);    // potential well of p1 that impacts on p2
-                    double PLJ_p2_to_p1 = p2.calculateLennardJones(p1, invR);    // potential well of p2 that impacts on p1
+                    double PLJ_p1_to_p2 = -p1.calculateLennardJones(p2, invR);    // potential well of p1 that impacts on p2
+//                    double PLJ_p2_to_p1 = p2.calculateLennardJones(p1, invR);    // potential well of p2 that impacts on p1
 
                     p2.getVectors().applyForces(rx * PLJ_p1_to_p2, ry * PLJ_p1_to_p2);      // apply force from p1 to p2
-                    p1.getVectors().applyForces(-rx * PLJ_p2_to_p1, -ry * PLJ_p2_to_p1);    // apply force from p2 to p1
+//                    p1.getVectors().applyForces(-rx * PLJ_p2_to_p1, -ry * PLJ_p2_to_p1);    // apply force from p2 to p1
                 }
             }
         }

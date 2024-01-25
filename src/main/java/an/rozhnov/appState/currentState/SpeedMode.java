@@ -3,8 +3,8 @@ package an.rozhnov.appState.currentState;
 public enum SpeedMode {
     SLOW(0.01),
     MEDIUM(0.02),
-    FAST(0.5),
-    VERY_FAST(0.8);
+    FAST(0.03),
+    VERY_FAST(0.04);
 
     private double dt;
 

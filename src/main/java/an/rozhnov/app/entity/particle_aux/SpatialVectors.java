@@ -54,16 +54,14 @@ public class SpatialVectors {
         f.y += fy;
     }
 
-    public double calculateLennardJones (double rmin, double eps, double invR) {
-        double sigma_r2 = rmin*rmin * invR;
+    public double calculateLennardJones (double sigma, double eps, double invR) {
+        double sigma_r2 = sigma*sigma * invR;
         double sigma_r6 = sigma_r2 * sigma_r2 * sigma_r2;
-        double sigma_r12 = sigma_r6*sigma_r6;
-        double LJ = 4 * eps * invR * (sigma_r12 - 2*sigma_r6);
+        double sigma_r12 = sigma_r6 * sigma_r6;
+        double LJ = 24 * eps * invR * (2*sigma_r12 - sigma_r6);
 
-        if (Double.isNaN(LJ) || LJ > 100)
-            return 100.0;
-        if (LJ < 0)
-            LJ = -10;
+        if (Double.isNaN(LJ) || LJ > 10e6)
+            return 10e6;
         return LJ;
     }
 

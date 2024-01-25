@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class ParticleDirector {
 
-    private ParticleBuilder particleBuilder;
+    private final ParticleBuilder particleBuilder;
 
     public ParticleDirector () {
         this.particleBuilder = new ParticleBuilder();
@@ -15,7 +15,7 @@ public class ParticleDirector {
 
     public Particle createRandomParticle () {
         return createMovingParticle(Math.random() * 1000, Math.random() * 1000,
-                Math.random() * (0.5 - (-0.5)) + (-0.5), Math.random() * (0.5 - (-0.5)) + (-0.5));
+                Math.random() + (-0.5), Math.random() + (-0.5));
     }
 
     public Particle createStaticParticle (double x, double y) {
@@ -25,7 +25,7 @@ public class ParticleDirector {
     }
 
     public Particle createRandomMovingParticle (double x, double y) {
-        return createMovingParticle(x, y, Math.random() * (0.5 - (-0.5)) + (-0.5), Math.random() * (0.5 - (-0.5)) + (-0.5));
+        return createMovingParticle(x, y, Math.random() + (-0.5), Math.random() + (-0.5));
     }
 
     public Particle createMovingParticle (double x, double y, double vx, double vy) {

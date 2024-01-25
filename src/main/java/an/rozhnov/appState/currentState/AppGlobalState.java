@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class AppGlobalState {
 
+    public static int SUBSTEPS = 10;
     public static SpeedMode speedMode = SpeedMode.SLOW;
     public static boolean paused = true;
     public static boolean clearSheduled = false;

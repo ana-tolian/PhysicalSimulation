@@ -32,6 +32,9 @@ public class MotionKernel {
         prepareImpactWorkers(regionMap.getParticles().size());
         startThreads();
         waitForThreads();
+
+//        for (Particle p : regionMap.getParticles())
+//            System.out.println("AAAA " + p.getX() + " " + p.getY() + " " + p.getLabel());
     }
 
     public void moveAll (double dt) {
@@ -61,6 +64,12 @@ public class MotionKernel {
 
     private void setBounds (ThreadWorker worker, int size, int i) {
         int indexWorkload = size >> LOG_THREAD_WORKERS;
+
+        if (indexWorkload == 0 && size > 0 && i == 0) {
+            worker.setBounds(0, size);
+            return;
+        }
+
         int beginIndex = i * indexWorkload;
         int endIndex = Math.min(beginIndex + indexWorkload, size);
 

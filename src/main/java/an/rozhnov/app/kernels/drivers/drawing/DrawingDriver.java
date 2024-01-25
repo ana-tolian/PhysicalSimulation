@@ -19,7 +19,7 @@ public class DrawingDriver {
     public void fillRectangle (int x1, int y1, int x2, int y2) {
         for (int x = x1; x <= x2; x++)
             for (int y = y1; y <= y2; y++)
-                queue.add(new ParticleDirector().createParticleFromBrush(AppGlobalState.particleBrush, x, y));
+                queue.add(new ParticleDirector().createParticleFromBrush(AppGlobalState.particleBrush, x + 0.5, y + 0.5));
     }
 
     public void rectangle (int x1, int y1, int x2, int y2) {
