@@ -35,6 +35,8 @@ public class RegionMap {
     }
 
     public void add (Particle p) {
+        if(!inBorders(p))
+            return;
         particles.add(p);
         regions.get(to1DIndex(p)).add(p);
     }
@@ -124,59 +126,6 @@ public class RegionMap {
         }
         return particle;
     }
-
-//    public HashSet<Particle> findAllNeighbours (Particle p) {
-//        int index = toRegionIndex(p);
-//
-//        boolean inBorders = inBorders(index);
-//        if (!inBorders)
-//            return new HashSet<>();
-//
-//        boolean north = index - sqX >= 0;
-//        boolean south = index + sqX < size - 1;
-//        boolean west = index % sqX != 0;
-//        boolean east = index - 1 % sqX != 0;
-//
-//        HashSet<Particle> neighbouringParticles = new HashSet<>(index);
-//
-//        if (north)
-//            unite(neighbouringParticles, regions.get(index - sqX));
-//
-//        if (south)
-//            unite(neighbouringParticles, regions.get(index + sqX));
-//
-//        if (west) {
-//            unite(neighbouringParticles, regions.get(index - 1));
-//
-//            if (north)   // North-West
-//                unite(neighbouringParticles, regions.get(index - sqX - 1));
-//            if (south)   // South-West
-//                unite(neighbouringParticles, regions.get(index + sqX - 1));
-//        }
-//
-//        if (east) {
-//            unite(neighbouringParticles, regions.get(index + 1));
-//
-//            if (north)   // North-East
-//                unite(neighbouringParticles, regions.get(index - sqX + 1));
-//            if (south)   // South-East
-//                unite(neighbouringParticles, regions.get(index + sqX + 1));
-//        }
-//
-////        System.out.println(sqX + " " + sqY + " " + index);
-////        System.out.println(neighbouringParticles.size() + " " + regions.get(index - sqX).size() + " " + regions.get(index + sqX).size()
-////                + " " + regions.get(index - 1).size() + " " + regions.get(index + 1).size() + " " + regions.get(index - sqX - 1).size() + " "
-////                + regions.get(index - sqX + 1).size() + " " + regions.get(index + sqX + 1).size());
-////        System.out.println(regions.get(index - sqX).size() + regions.get(index + sqX).size()
-////                + regions.get(index - 1).size() + regions.get(index + 1).size() + regions.get(index - sqX - 1).size()
-////                + regions.get(index - sqX + 1).size() + regions.get(index + sqX + 1).size());
-//
-//        return neighbouringParticles;
-//    }
-
-//    private void unite(HashSet<Particle> neighbouringParticles, HashSet<Particle> temp) {
-//        Collections.addAll(neighbouringParticles, temp.toArray(new Particle[0]));
-//    }
 
     public void clear () {
         for (int i = 0; i < SIZE; i++)

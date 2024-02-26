@@ -11,17 +11,27 @@
             <rec>
                 <type>Oxy</type>
                 <rmin> 0.95</rmin>
-                <eps>5</eps>
+                <eps>10</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin> 1</rmin>
-                <eps>2</eps>
+                <rmin> 0.95</rmin>
+                <eps>100</eps>
             </rec>
             <rec>
                 <type>Sil</type>
                 <rmin>0.95</rmin>
                 <eps>10</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>0.9</rmin>
+                <eps>10</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Wal</type>
@@ -37,22 +47,32 @@
         <radius> 1  </radius>
         <mass>  1   </mass>
         <temperature> 283 </temperature>
-        <color>(0,0,230)</color>
+        <color>(0,150,255)</color>
         <potential>
             <rec>
                 <type>Oxy</type>
-                <rmin> 2</rmin>
-                <eps>1</eps>
+                <rmin>0.95</rmin>
+                <eps>100</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin> 0.95</rmin>
-                <eps>70</eps>
+                <rmin> 0.8</rmin>
+                <eps>100</eps>
             </rec>
             <rec>
                 <type>Sil</type>
                 <rmin>0.95</rmin>
+                <eps>1</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>0.9</rmin>
                 <eps>10</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
+                <eps>1</eps>
             </rec>
             <rec>
                 <type>Wal</type>
@@ -73,7 +93,7 @@
             <rec>
                 <type>Oxy</type>
                 <rmin> 0.95</rmin>
-                <eps>5</eps>
+                <eps>50</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
@@ -82,7 +102,99 @@
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>0.7</rmin>
+                <rmin>0.9</rmin>
+                <eps>200</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>0.9</rmin>
+                <eps>200</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
+                <eps>1</eps>
+            </rec>
+            <rec>
+                <type>Wal</type>
+                <rmin> 1</rmin>
+                <eps>1</eps>
+            </rec>
+        </potential>
+    </particle>
+
+    <particle>
+        <name> Carbon </name>
+        <type> C </type>
+        <radius> 1  </radius>
+        <mass>  1   </mass>
+        <temperature> 283 </temperature>
+        <color> (220,0,150)</color>
+        <potential>
+            <rec>
+                <type>Oxy</type>
+                <rmin> 0.95</rmin>
+                <eps>50</eps>
+            </rec>
+            <rec>
+                <type>Hyd</type>
+                <rmin> 0.95</rmin>
+                <eps>1</eps>
+            </rec>
+            <rec>
+                <type>Sil</type>
+                <rmin>0.9</rmin>
+                <eps>200</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>0.9</rmin>
+                <eps>200</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
+                <eps>1</eps>
+            </rec>
+            <rec>
+                <type>Wal</type>
+                <rmin> 1</rmin>
+                <eps>1</eps>
+            </rec>
+        </potential>
+    </particle>
+
+    <particle>
+        <name> Argon </name>
+        <type> A </type>
+        <radius> 1  </radius>
+        <mass>  1   </mass>
+        <temperature> 283 </temperature>
+        <color> (0,220,0)</color>
+        <potential>
+            <rec>
+                <type>Oxy</type>
+                <rmin> 0.95</rmin>
+                <eps>0</eps>
+            </rec>
+            <rec>
+                <type>Hyd</type>
+                <rmin> 0.95</rmin>
+                <eps>0</eps>
+            </rec>
+            <rec>
+                <type>Sil</type>
+                <rmin>0.9</rmin>
+                <eps>0</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>0.9</rmin>
+                <eps>0</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
                 <eps>1</eps>
             </rec>
             <rec>
@@ -103,18 +215,28 @@
         <potential>
             <rec>
                 <type>Oxy</type>
-                <rmin>1</rmin>
+                <rmin>1.1</rmin>
                 <eps>1</eps>
             </rec>
             <rec>
                 <type>Hyd</type>
-                <rmin>1</rmin>
+                <rmin>1.1</rmin>
                 <eps>1</eps>
             </rec>
             <rec>
                 <type>Sil</type>
-                <rmin>1</rmin>
+                <rmin>1.1</rmin>
                 <eps>1</eps>
+            </rec>
+            <rec>
+                <type>C</type>
+                <rmin>1.1</rmin>
+                <eps>1</eps>
+            </rec>
+            <rec>
+                <type>A</type>
+                <rmin>1</rmin>
+                <eps>1.1</eps>
             </rec>
             <rec>
                 <type>Wal</type>

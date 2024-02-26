@@ -6,7 +6,7 @@ import an.rozhnov.app.kernels.drivers.particle.RegionMap;
 
 public class MotionKernel {
 
-    private final int NUMBER_OF_THREAD_WORKERS = 16;
+    private final int NUMBER_OF_THREAD_WORKERS = 32;
     private final int LOG_THREAD_WORKERS = (int) (Math.log(NUMBER_OF_THREAD_WORKERS) / Math.log(2));
 
     private final RegionMap regionMap;

@@ -44,10 +44,8 @@ public class ImpactThreadWorker extends ThreadWorker implements Runnable {
                     double invR = 1 / R;
 
                     double PLJ_p1_to_p2 = -p1.calculateLennardJones(p2, invR);    // potential well of p1 that impacts on p2
-//                    double PLJ_p2_to_p1 = p2.calculateLennardJones(p1, invR);    // potential well of p2 that impacts on p1
 
                     p2.getVectors().applyForces(rx * PLJ_p1_to_p2, ry * PLJ_p1_to_p2);      // apply force from p1 to p2
-//                    p1.getVectors().applyForces(-rx * PLJ_p2_to_p1, -ry * PLJ_p2_to_p1);    // apply force from p2 to p1
                 }
             }
         }

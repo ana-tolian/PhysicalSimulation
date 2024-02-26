@@ -51,11 +51,11 @@ public class MainKernel implements Runnable {
             if (AppGlobalState.paused)
                 continue;
 
-            dt = AppGlobalState.speedMode.dt() / SUBSTEPS;
-            for (int i = 0; i < SUBSTEPS; i++) {
+            dt = AppGlobalState.speedMode.dt();// / SUBSTEPS;
+//            for (int i = 0; i < SUBSTEPS; i++) {
                 motionKernel.performImpact();
                 motionKernel.moveAll(dt);
-            }
+//            }
 
             FPSController.stopMeasuring();
         }

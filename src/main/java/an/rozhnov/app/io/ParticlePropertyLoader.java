@@ -72,10 +72,12 @@ public class ParticlePropertyLoader {
                                     if (potentialParam.getNodeName().equals("type"))
                                         potentialType = potentialParam.getTextContent();
 
-                                    if (potentialParam.getNodeName().equals("rmin") && !potentialType.equals("null"))
-                                        rmin.put(potentialType, Double.parseDouble(potentialParam.getTextContent()));
-                                    else if (potentialParam.getNodeName().equals("eps") && !potentialType.equals("null"))
+                                    if (potentialParam.getNodeName().equals("rmin") && !potentialType.equals("null")) {
+                                        double sigma = Double.parseDouble(potentialParam.getTextContent()) / Math.pow(2.0, 1.0/6.0);
+                                        rmin.put(potentialType, sigma);
+                                    } else if (potentialParam.getNodeName().equals("eps") && !potentialType.equals("null"))
                                         eps.put(potentialType, Double.parseDouble(potentialParam.getTextContent()));
+
                                 }
                             }
                         }
