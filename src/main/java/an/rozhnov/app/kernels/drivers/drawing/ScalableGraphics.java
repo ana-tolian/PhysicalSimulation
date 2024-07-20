@@ -7,6 +7,7 @@ import java.awt.*;
 public class ScalableGraphics {
 
     private final static int SCALE = 4;
+    private final static int H_SCALE = SCALE / 2;
     public final static int SHEAR = (int) (Math.log(SCALE) / Math.log(2));
     public final static int LOGICAL_WIDTH = PredefinedParameters.REAL_SIM_WIDTH / SCALE;
     public final static int LOGICAL_HEIGHT = PredefinedParameters.REAL_SIM_HEIGHT / SCALE;
@@ -45,8 +46,17 @@ public class ScalableGraphics {
     }
 
     public void drawLine (int x1, int y1, int x2, int y2) {
+        Stroke g2temp = g2.getStroke();
+        g2.setStroke(new BasicStroke(2));
+
         scaleCoords(x1, y1, x2, y2,0, 0);
+//        this.x1 += H_SCALE;
+//        this.y1 += H_SCALE;
+//        this.x2 += H_SCALE;
+//        this.y2 += H_SCALE;
         g2.drawLine(this.x1, this.y1, this.x2, this.y2);
+
+        g2.setStroke(g2temp);
     }
 
     public void drawRect (int x1, int y1, int w, int h) {
@@ -55,7 +65,7 @@ public class ScalableGraphics {
     }
 
     public void fillRect (int x1, int y1, int w, int h) {
-        scaleCoords(x1, y1, 0, 0, w, h);
+        scaleCoords(x1, y1, 0, 0, w + 1, h + 1);
         g2.fillRect(this.x1, this.y1, this.w, this.h);
     }
 

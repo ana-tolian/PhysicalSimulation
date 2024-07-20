@@ -32,9 +32,6 @@ public class MotionKernel {
         prepareImpactWorkers(regionMap.getParticles().size());
         startThreads();
         waitForThreads();
-
-//        for (Particle p : regionMap.getParticles())
-//            System.out.println("AAAA " + p.getX() + " " + p.getY() + " " + p.getLabel());
     }
 
     public void moveAll (double dt) {

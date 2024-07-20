@@ -58,10 +58,10 @@ public class SpatialVectors {
         double sigma_r2 = sigma*sigma * invR;
         double sigma_r6 = sigma_r2 * sigma_r2 * sigma_r2;
         double sigma_r12 = sigma_r6 * sigma_r6;
-        double LJ = 24 * eps * invR * (2*sigma_r12 - sigma_r6);
+        double LJ = 48 * eps * invR * (4*sigma_r12 - sigma_r6);
 
-        if (Double.isNaN(LJ) || LJ > 10e5)
-            return 10e5;
+        if (Double.isNaN(LJ) || LJ > 10e4)
+            return 10e4;
         return LJ;
     }
 

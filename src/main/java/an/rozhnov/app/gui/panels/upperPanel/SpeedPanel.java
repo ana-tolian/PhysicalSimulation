@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static an.rozhnov.appState.PredefinedParameters.UPPER_TOOL_PANEL_BACKGROUND;
+
 public class SpeedPanel extends NPanel implements ActionListener {
 
     private final NButton pauseButton;
@@ -20,26 +22,38 @@ public class SpeedPanel extends NPanel implements ActionListener {
 
     public SpeedPanel () {
         this.setLayout(new FlowLayout());
+        this.setBackground(UPPER_TOOL_PANEL_BACKGROUND);
 
         pauseButton = new NButton("||");
         pauseButton.addActionListener(this);
         pauseButton.setActionCommand("pause");
+        pauseButton.setBackground(new Color(113, 208, 168));
+        pauseButton.setFont(new Font("Calibri", Font.BOLD, 14));
+//        pauseButton.setForeground(new Color(155, 70, 108));
 
-        speed0 = new NButton("1");
-        pauseButton.setActionCommand("0");
+        speed0 = new NButton(">");
+        speed0.setActionCommand("0");
         speed0.addActionListener(this);
+        speed0.setBackground(new Color(113, 208, 168));
+        speed0.setFont(new Font("Courier New", Font.BOLD, 14));
 
-        speed1 = new NButton("2");
-        pauseButton.setActionCommand("1");
+        speed1 = new NButton(">>");
+        speed1.setActionCommand("1");
         speed1.addActionListener(this);
+        speed1.setBackground(new Color(113, 208, 168));
+        speed1.setFont(new Font("Courier New", Font.BOLD, 14));
 
-        speed2 = new NButton("3");
-        pauseButton.setActionCommand("2");
+        speed2 = new NButton(">>>");
+        speed2.setActionCommand("2");
         speed2.addActionListener(this);
+        speed2.setBackground(new Color(113, 208, 168));
+        speed2.setFont(new Font("Courier New", Font.BOLD, 14));
 
-        speed3 = new NButton("4");
-        pauseButton.setActionCommand("3");
+        speed3 = new NButton(">>>>");
+        speed3.setActionCommand("3");
         speed3.addActionListener(this);
+        speed3.setBackground(new Color(113, 208, 168));
+        speed3.setFont(new Font("Courier New", Font.BOLD, 14));
 
         this.add(pauseButton);
         this.add(speed0);

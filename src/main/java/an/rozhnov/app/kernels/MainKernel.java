@@ -8,8 +8,6 @@ import an.rozhnov.app.kernels.drivers.particle.RegionMap;
 import an.rozhnov.appState.PredefinedParameters;
 import an.rozhnov.appState.currentState.AppGlobalState;
 
-import static an.rozhnov.appState.currentState.AppGlobalState.SUBSTEPS;
-
 
 public class MainKernel implements Runnable {
 
@@ -51,11 +49,9 @@ public class MainKernel implements Runnable {
             if (AppGlobalState.paused)
                 continue;
 
-            dt = AppGlobalState.speedMode.dt();// / SUBSTEPS;
-//            for (int i = 0; i < SUBSTEPS; i++) {
-                motionKernel.performImpact();
-                motionKernel.moveAll(dt);
-//            }
+            dt = AppGlobalState.speedMode.dt();
+            motionKernel.performImpact();
+            motionKernel.moveAll(dt);
 
             FPSController.stopMeasuring();
         }

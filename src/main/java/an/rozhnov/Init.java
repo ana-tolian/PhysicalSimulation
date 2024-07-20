@@ -15,7 +15,7 @@ public class Init {
     }
 
     private static void createUI () {
-        frame = new JFrame ("2D Sym");
+        frame = new JFrame ("Симуляция");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
 
